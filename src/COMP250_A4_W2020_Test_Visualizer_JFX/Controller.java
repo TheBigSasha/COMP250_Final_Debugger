@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Controller implements Initializable {
     private HashTableBenchmark bm;
-    private static final String musicFile = "src/COMP250_A4_W2020_Test_Visualizer_JFX/Minecraft Alpha Damage - Sound Effect.mp3";
+    private static final String musicFile = "src/COMP250_A4_W2020_Test_Visualizer_JFX/minecraft_damage.mp3";
     private ScheduledExecutorService scheduledExecutorService;
     //BENCHMARKING
     @FXML
@@ -84,14 +84,14 @@ public class Controller implements Initializable {
         UT_Title.setOpacity(0.5);
         BM_Title.setOpacity(1);
         Benchmarking.setVisible(true);
-        initalizeGraph(0);
+        //initalizeGraph(0);
     }
 
     @FXML
     protected void OpenUnitTesting() {
         System.out.println("Switching to Unit Testing View");
         Benchmarking.setVisible(false);
-        scheduledExecutorService.shutdownNow();
+        //scheduledExecutorService.shutdownNow();
         BM_Title.setOpacity(0.5);
         UT_Title.setOpacity(1);
         UnitTesting.setVisible(true);
@@ -119,11 +119,12 @@ public class Controller implements Initializable {
         menu_keysBM.setOnAction(e -> initalizeGraph(8));
         menu_removeBM.setOnAction(e -> initalizeGraph(9));
         dark_theme_switch.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-            if (isSelected) {
+           /* if (isSelected) {
                 enableDarkTheme();
             } else {
                 disableDarkTheme();
-            }
+            }*/
+            playOof();
         });
         sashaPhotoLink.setOnAction(e -> {
             if (Desktop.isDesktopSupported()) {
