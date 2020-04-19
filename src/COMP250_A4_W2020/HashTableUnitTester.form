@@ -21,7 +21,7 @@
         </children>
       </scrollpane>
       <component id="e020c" class="javax.swing.JButton" binding="button1" default-binding="true">
-        <constraints border-constraint="Last"/>
+        <constraints border-constraint="South"/>
         <properties>
           <text value="RUN"/>
         </properties>
