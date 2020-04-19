@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="anchorPane" maxHeight="900.0" maxWidth="900.0" prefHeight="600.0"
+            prefWidth="900.0" stylesheets=" /COMP250_A4_W2020_Test_Visualizer_JFX/mondea_dark.css"
+            xmlns="http://javafx.com/javafx/10.0.2-internal"
+            fx:controller="COMP250_A4_W2020_Test_Visualizer_JFX.Controller">
+   <Pane fx:id="Benchmarking">
+      <children>
+         <AnchorPane fx:id="innerPane">
+            <BorderPane layoutY="550.0" minWidth="-Infinity" prefWidth="900.0">
+               <center>
+                  <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefWrapLength="50.0"
+                            BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="Data Points Hor" textAlignment="CENTER">
+                           <font>
+                              <Font name="Gill Sans MT" size="12.0"/>
+                           </font>
+                        </Label>
+                        <Slider fx:id="sizeSlider" max="1500.0" min="5.0" value="500.0"/>
+                        <Hyperlink fx:id="sashaPhotoLink" text=":)"/>
+                     </children>
+                  </FlowPane>
+               </center>
+            </BorderPane>
+            <Pane fx:id="paneView" layoutY="25.0" mouseTransparent="true"/>
+            <MenuButton fx:id="test_cases_menu" layoutX="798.0" layoutY="13.0" mnemonicParsing="false"
+                        text="Test Cases">
+               <items>
+                  <Menu mnemonicParsing="false" text="Hash Table">
+                     <items>
+                        <MenuItem id="menu_getBM" fx:id="menu_getBM" mnemonicParsing="false" text="Get"/>
+                        <MenuItem id="menu_putBM" fx:id="menu_putBM" mnemonicParsing="false" text="Put"/>
+                        <MenuItem id="menu_sortBM" fx:id="menu_sortBM" mnemonicParsing="false" text="Sort"/>
+                        <MenuItem id="menu_removeBM" fx:id="menu_removeBM" mnemonicParsing="false" text="Remove"/>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem id="menu_valuesBM" fx:id="menu_valuesBM" mnemonicParsing="false" text="Values"/>
+                        <MenuItem id="menu_keysBM" fx:id="menu_keysBM" mnemonicParsing="false" text="Keys"/>
+                        <MenuItem id="menu_rehashBM" fx:id="menu_rehashBM" mnemonicParsing="false" text="Rehash"/>
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Iterator">
+                     <items>
+                        <MenuItem id="menu_nextBM" fx:id="menu_nextBM" mnemonicParsing="false" text="Next"/>
+                        <MenuItem id="menu_iterBM" fx:id="menu_iterBM" mnemonicParsing="false" text="Iter"/>
+                        <MenuItem id="menu_hasNextBM" fx:id="menu_hasNextBM" mnemonicParsing="false" text="HasNext"/>
+                     </items>
+                  </Menu>
+               </items>
+            </MenuButton>
+            <CheckBox fx:id="dark_theme_switch" layoutX="703.0" layoutY="17.0" mnemonicParsing="false"
+                      mouseTransparent="true" selected="true" text="Dark Theme">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND"/>
+               </cursor>
+               <font>
+                  <Font name="Arial Narrow Bold" size="13.0"/>
+               </font>
+            </CheckBox>
+         </AnchorPane>
+      </children>
+   </Pane>
+   <Pane fx:id="UnitTesting" prefHeight="600.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0"
+         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+         <TextArea fx:id="UnitTestTextArea" layoutX="25.0" layoutY="52.0" prefHeight="500.0" prefWidth="849.0"/>
+         <MenuButton layoutX="798.0" layoutY="14.0" mnemonicParsing="false" text="Test Cases">
+            <items>
+               <MenuItem id="UT_RunAll" fx:id="UT_RunAll" mnemonicParsing="false" text="Test MyHashTable()"/>
+            </items>
+         </MenuButton>
+         <Button fx:id="UT_RunBtn" layoutX="751.0" layoutY="14.0" mnemonicParsing="false" text="Run"/>
+      </children>
+   </Pane>
+   <ButtonBar buttonMinWidth="120.0" prefHeight="50.0">
+      <buttons>
+         <Label fx:id="BM_Title" onMouseClicked="#OpenBenchmarking" text="Benchmarks">
+            <font>
+               <Font name="Gill Sans MT Condensed" size="33.0"/>
+            </font>
+         </Label>
+         <Label fx:id="UT_Title" onMouseClicked="#OpenUnitTesting" opacity="0.5" text="Unit Tests">
+            <font>
+               <Font name="Gill Sans MT Condensed" size="33.0"/>
+            </font>
+         </Label>
+      </buttons>
+   </ButtonBar>
+</AnchorPane>
