@@ -27,7 +27,7 @@
                   </FlowPane>
                </center>
             </BorderPane>
-            <Pane fx:id="paneView" layoutY="25.0" mouseTransparent="true"/>
+            <Pane fx:id="paneView" layoutY="40.0" mouseTransparent="true"/>
             <MenuButton fx:id="test_cases_menu" layoutX="798.0" layoutY="13.0" mnemonicParsing="false"
                         text="Test Cases">
                <items>
@@ -80,12 +80,12 @@
       <buttons>
          <Label fx:id="BM_Title" onMouseClicked="#OpenBenchmarking" text="Benchmarks">
             <font>
-               <Font name="Gill Sans MT Condensed" size="33.0"/>
+               <Font name="Arial Narrow" size="33.0"/>
             </font>
          </Label>
          <Label fx:id="UT_Title" onMouseClicked="#OpenUnitTesting" opacity="0.5" text="Unit Tests">
             <font>
-               <Font name="Gill Sans MT Condensed" size="33.0"/>
+               <Font name="Arial Narrow" size="33.0"/>
             </font>
          </Label>
       </buttons>

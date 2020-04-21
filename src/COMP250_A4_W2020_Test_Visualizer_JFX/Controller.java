@@ -1,6 +1,7 @@
 package COMP250_A4_W2020_Test_Visualizer_JFX;
 
 import COMP250_A4_W2020.HashTableBenchmark;
+import COMP250_A4_W2020.HashTableStressTester;
 import COMP250_A4_W2020.HashTableUnitTester;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -155,6 +156,12 @@ public class Controller implements Initializable {
     private void runAllTests() {
         HashTableUnitTester UT = new HashTableUnitTester(bm.getRand());
         UnitTestTextArea.setText(UT.runTests());
+        try {
+            HashTableStressTester.main(new String[0]);
+            UnitTestTextArea.appendText("\n \n \nRan prof supplied tests. Check console for results.");
+        } catch (Exception e) {
+            UnitTestTextArea.appendText("\n\n\nAttempted to run prof supplied test, but it threw exception " + e.getMessage());
+        }
         UnitTestTextArea.appendText("\n \n \nMore tests coming soon <3");
     }
 
