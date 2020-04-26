@@ -56,10 +56,12 @@ public class TwitterBenchmark extends HashTableBenchmark {
 
                 try {
                     startTime = System.nanoTime();
-                    ArrayList<Tweet> byDateOutput = t.tweetsByDate("2020-03-25 22:05:42");
+                    ArrayList<Tweet> byDateOutput = t.tweetsByDate("2020-03-25");
                     endTime = System.nanoTime();
                     output.append("[BASIC TWITTER TEST] Twitter tweets per day ran in ").append(endTime - startTime).append(" nanoseconds. \n");
-                    if (byDateOutput.size() != 228) {
+                    if (byDateOutput == null) {
+                        output.append("[BASIC TWITTER TEST] Output was null");
+                    } else if (byDateOutput.size() != 228) {
                         output.append("[BASIC TWITTER TEST] Output size mismatch? Size was " + byDateOutput.size() + "\n[BASIC TWITTER TEST] Tweets from date produced tweets like: ").append(byDateOutput.get((byDateOutput.size() - 1) / 2)).append("\n");
                     } else
                         output.append("[BASIC TWITTER TEST] For fun, here's a tweet it got " + byDateOutput.get((byDateOutput.size() - 1) / 2) + "\n");
