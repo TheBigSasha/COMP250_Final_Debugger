@@ -233,6 +233,13 @@
             <Pane fx:id="paneView" layoutY="54.0" mouseTransparent="true" prefHeight="539.0" prefWidth="900.0"
                   AnchorPane.bottomAnchor="207.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                   AnchorPane.topAnchor="54.0"/>
+            <ButtonBar layoutX="621.0" layoutY="14.0">
+               <buttons>
+                  <Button fx:id="GC_Reset" mnemonicParsing="false" text="Reset"/>
+                  <Button fx:id="GC_Help" mnemonicParsing="false" text="Help"/>
+                  <Button fx:id="GC_Refresh" mnemonicParsing="false" text="Refresh"/>
+               </buttons>
+            </ButtonBar>
          </AnchorPane>
       </children>
    </Pane>

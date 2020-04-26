@@ -10,13 +10,21 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -24,13 +32,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-//TODO: GENIUS PLAN:
-//Allow users to plot the methods of their choice all at once
-//ALLOW USERS TO SUBTRACT AND ADD THE RUNTIME OF CERTAIN METHODS FROM EACH OTHER TO SEE
-//THE EFFECTS OF METHOD CALLS ON RUNNING TIME (IE. SUBTRACT RUNTIME OF SORT FROM SMT ELSE)
-//Add plots for built in methods for timing reference
-//REVISE DRAWING USING AN ARRAYLIST OF SERIES AND USE CHECK BOXES TO SELECT WHAT GETS GRAPHED
-//FIX WINDOW SIZING WHILE I AM AT IT.
 public class Controller implements Initializable {
     private static final String musicFile = "src/COMP250_A4_W2020_Test_Visualizer_JFX/minecraft_damage.mp3";
     ArrayList<CheckBox> toggles;
@@ -53,6 +54,9 @@ public class Controller implements Initializable {
             GC_Twit_ConstructorII, GC_Twit_TrendingII, GC_TurboMode;
     @FXML
     private Slider GC_StopWordFactor, GC_StopWordFactorII, GC_TurboFactor;
+    @FXML
+    private Button GC_Reset, GC_Help, GC_Refresh;
+
     //UNIT TESTING
     @FXML
     private Pane UnitTesting;
@@ -125,6 +129,9 @@ public class Controller implements Initializable {
         UT_RunBtn.setOnAction(e -> runAllTests());
         UT_RunAll.setOnAction(e -> runUnitTests());
         UT_RunBasicTwitter.setOnAction(e -> runBasicTwitterTest());
+        GC_Reset.setOnAction(e -> resetButtons());
+        GC_Refresh.setOnAction(e -> initalizeGraph(0));
+        GC_Help.setOnAction(e -> openHelpPage());
         for (CheckBox box : toggles) {
             box.setOnMouseClicked(e -> initalizeGraph(0));
         }
@@ -134,6 +141,25 @@ public class Controller implements Initializable {
         Media sound = new Media(new File(musicFile).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
+    }
+
+    private void openHelpPage() {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(new URI("https://sashaphoto.ca/COMP250FinalDebuggerHelp/"));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    private void resetButtons() {
+        for (CheckBox box : toggles) {
+            box.setSelected(false);
+        }
+        initalizeGraph(0);
     }
 
     private void runUnitTests() {
