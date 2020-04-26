@@ -672,7 +672,7 @@ public class RandomTweets extends Random {
      */
     public ArrayList<String> nextStopWords(int length) {
         if (mostCommonWords.size() > length) {
-            return (ArrayList<String>) mostCommonWords.subList(0, length);
+            return new ArrayList<String>(mostCommonWords.subList(0, length));
         } else {
             ArrayList<String> output = new ArrayList<>(mostCommonWords);
             if (length < output.size() + names.size()) {
@@ -680,7 +680,7 @@ public class RandomTweets extends Random {
             } else {
                 output.addAll(names);
                 for (int i = output.size(); i < length; i++) {
-                    output.add(nextBeeMovieLine().substring(0, nextBound(5) + 5));
+                    output.add(nextBeeMovieLine().split(" ")[0]);
                 }
             }
             return output;
@@ -695,4 +695,66 @@ public class RandomTweets extends Random {
         return new Twitter(toAddTweets, toAddStopWords);
     }
 
+    public String sing(String keyword) {
+        StringBuilder output = new StringBuilder();
+        int max = 10 + this.nextInt(25);
+        for (int i = 0; i < max; i++) {
+            output.append(this.nextSongLyricWithKeyword(keyword)).append("\n");
+        }
+        return output.toString();
+    }
+
+    public String sing() {
+        StringBuilder output = new StringBuilder();
+        int max = 10 + this.nextInt(25);
+        for (int i = 0; i < max; i++) {
+            output.append(this.nextSongLyric()).append("\n");
+        }
+        return output.toString();
+    }
+
+    private ArrayList<Tweet> tweetsOf(ArrayList<String> strings) {
+        ArrayList<Tweet> output = new ArrayList<>();
+        for (String s : strings) {
+            output.add(new Tweet(nextUserName(), nextDate(), s));
+        }
+        return output;
+    }
+
+    public String nextTrend(int i, int stopWordFator) {
+        Twitter t;
+        switch (i) {
+            case 0:
+                t = new Twitter(tweetsOf(beeMovieScript), nextStopWords(beeMovieScript.size() / (stopWordFator + 1)));
+                break;
+            case 1:
+                TwitterBenchmark tBM = new TwitterBenchmark(this);
+                if (stopWordFator > 50) {
+                    ArrayList<String> stopWords = new ArrayList<String>(tBM.getProfStopWords());
+                    stopWords.addAll(nextStopWords(stopWordFator * 70));
+                    t = new Twitter(tBM.getProfTweets(), stopWords);
+                } else {
+                    t = new Twitter(tBM.getProfTweets(), tBM.getProfStopWords());
+                }
+                break;
+            case 2:
+                t = new Twitter(tweetsOf(songLyric), nextStopWords(songLyric.size() / (stopWordFator * 100 + 1)));
+                break;
+            case 3:
+                t = new Twitter(tweetsOf(new ArrayList<>(songLyric.subList(0, 98000))), nextStopWords(songLyric.size() / (stopWordFator * 50 + 1)));
+                break;
+            default:
+                t = new Twitter(tweetsOf(beeMovieScript), nextStopWords(beeMovieScript.size() / (stopWordFator + 1)));
+                break;
+        }
+        StringBuilder output = new StringBuilder();
+        ArrayList<String> trending = t.trendingTopics();
+        int counter = 0;
+        for (String s : trending) {
+            if (counter > 100) break;
+            output.append(s).append("\n");
+            counter++;
+        }
+        return output.toString();
+    }
 }
