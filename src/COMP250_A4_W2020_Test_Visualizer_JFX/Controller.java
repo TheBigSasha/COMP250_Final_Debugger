@@ -85,7 +85,7 @@ public class Controller implements Initializable {
     private ChoiceBox<String> FunTrendingSelector;
     @FXML
     private Button Fun_GoTrends, Fun_GoSong, Fun_GoTweets, Fun_TweetsAboutRand, Fun_CommonWordsRand,
-            Fun_GoWords, Fun_SingAboutRand;
+            Fun_GoWords, Fun_SingAboutRand, fun_Sashaphotolink;
     @FXML
     private TextField Fun_TweetsAbout, Fun_SongKeyword;
     @FXML
@@ -157,6 +157,7 @@ public class Controller implements Initializable {
         Fun_GoSong.setOnAction(e -> fun_sing(false));
         Fun_GoTrends.setOnAction(e -> fun_trend());
         Fun_GoTweets.setOnAction(e -> fun_tweets(false));
+        fun_Sashaphotolink.setOnAction(e -> openSashaPhoto());
         FunTrendingSelector.getItems().addAll(trendOptions);
         FunTrendingSelector.setValue(trendOptions.get(0));
         for (CheckBox box : toggles) {
@@ -213,6 +214,18 @@ public class Controller implements Initializable {
         Fun_SingAboutRand.setOnAction(e -> fun_sing(true));
         Fun_CommonWordsRand.setOnAction(e -> fun_words(true));
         Fun_TweetsAboutRand.setOnAction(e -> fun_tweets(true));
+    }
+
+    private void openSashaPhoto() {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(new URI("https://sashaphoto.ca/"));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     private void fun_words(boolean random) {

@@ -260,7 +260,8 @@
    <Pane fx:id="FunDemos" prefHeight="637.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0"
          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-         <Button layoutX="782.0" layoutY="14.0" mnemonicParsing="false" text="sashaphoto.ca"/>
+         <Button fx:id="fun_Sashaphotolink" layoutX="782.0" layoutY="14.0" mnemonicParsing="false"
+                 text="sashaphoto.ca"/>
          <TextArea fx:id="Fun_Output" layoutX="25.0" layoutY="57.0" prefHeight="550.0" prefWidth="849.0"/>
          <TextFlow layoutX="25.0" layoutY="629.0">
             <children>
