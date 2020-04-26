@@ -10,10 +10,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
@@ -21,8 +18,7 @@ import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -36,9 +32,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 //REVISE DRAWING USING AN ARRAYLIST OF SERIES AND USE CHECK BOXES TO SELECT WHAT GETS GRAPHED
 //FIX WINDOW SIZING WHILE I AM AT IT.
 public class Controller implements Initializable {
+    private static final String musicFile = "src/COMP250_A4_W2020_Test_Visualizer_JFX/minecraft_damage.mp3";
+    ArrayList<CheckBox> toggles;
     private HashTableBenchmark BM;
     private TwitterBenchmark tBM;
-    private static final String musicFile = "src/COMP250_A4_W2020_Test_Visualizer_JFX/minecraft_damage.mp3";
     private ScheduledExecutorService scheduledExecutorService;
     //BENCHMARKING
     @FXML
@@ -47,6 +44,15 @@ public class Controller implements Initializable {
     private AnchorPane anchorPane;
     @FXML
     private Pane paneView;
+    @FXML
+    private CheckBox GC_FastSort, GC_Remove, GC_Rehash, GC_Values, GC_Constructor, GC_Keys, GC_Get, GC_Put,
+            GC_ArrayListMergeSort, GC_ProfSlowSort, GC_Iter, GC_hasNext, GC_Next, GC_J_Constructor,
+            GC_J_Put, GC_J_Get, GC_J_Remove, GC_J_Values, GC_J_Keys;
+    @FXML
+    private CheckBox GC_Twit_Trending, GC_Twit_Constructor, GC_Twit_ByDate, GC_Twit_ByAuth, GC_Twit_Add,
+            GC_Twit_ConstructorII, GC_Twit_TrendingII, GC_TurboMode;
+    @FXML
+    private Slider GC_StopWordFactor, GC_StopWordFactorII, GC_TurboFactor;
     //UNIT TESTING
     @FXML
     private Pane UnitTesting;
@@ -68,6 +74,10 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        toggles = new ArrayList<>(Arrays.asList(GC_FastSort, GC_Remove, GC_Rehash, GC_Values, GC_Constructor, GC_Keys, GC_Get, GC_Put,
+                GC_ArrayListMergeSort, GC_ProfSlowSort, GC_Iter, GC_hasNext, GC_Next, GC_J_Constructor,
+                GC_J_Put, GC_J_Get, GC_J_Remove, GC_J_Values, GC_J_Keys, GC_Twit_Trending, GC_Twit_Constructor, GC_Twit_ByDate, GC_Twit_ByAuth, GC_Twit_Add,
+                GC_Twit_ConstructorII, GC_Twit_TrendingII));
         addListeners();
         BM = new HashTableBenchmark();
         tBM = new TwitterBenchmark(BM.getRand());
@@ -115,6 +125,9 @@ public class Controller implements Initializable {
         UT_RunBtn.setOnAction(e -> runAllTests());
         UT_RunAll.setOnAction(e -> runUnitTests());
         UT_RunBasicTwitter.setOnAction(e -> runBasicTwitterTest());
+        for (CheckBox box : toggles) {
+            box.setOnMouseClicked(e -> initalizeGraph(0));
+        }
     }
 
     private void playOof() {
@@ -181,79 +194,23 @@ public class Controller implements Initializable {
 
         // creating the line chart with two axis created above
         LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        boolean dualGraph = false;
-        switch (input) {
-            case 0:
-                dualGraph = true;
-                lineChart.setTitle("Runtime Efficiency of FastSort");
-                break;
-            case 1:
-                dualGraph = true;
-                lineChart.setTitle("Runtime Efficiency of Get");
-                break;
-            case 2:
-                dualGraph = true;
-                lineChart.setTitle("Runtime Efficiency of Put");
-                break;
-            case 3:
-                lineChart.setTitle("Runtime Efficiency of Iterator.next");
-                break;
-            case 4:
-                lineChart.setTitle("Runtime Efficiency of Iterator.hasNext");
-                break;
-            case 5:
-                lineChart.setTitle("Runtime Efficiency of Iterator constructor");
-                break;
-            case 6:
-                lineChart.setTitle("Runtime Efficiency of rehash");
-                break;
-            case 7:
-                dualGraph = true;
-                lineChart.setTitle("Runtime Efficiency of values");
-                break;
-            case 8:
-                dualGraph = true;
-                lineChart.setTitle("Runtime Efficiency of keys");
-                break;
-            case 9:
-                dualGraph = true;
-                lineChart.setTitle("Runtime Efficiency of remove");
-                break;
-            case 10:
-                lineChart.setTitle("Runtime Efficiency of Twitter.add");
-                break;
-            case 11:
-                lineChart.setTitle("Runtime Efficiency of Twitter.byDate");
-                break;
-            case 12:
-                lineChart.setTitle("Runtime Efficiency of Twitter.byAuth");
-                break;
-            case 13:
-                lineChart.setTitle("Runtime Efficiency of Twitter.trend");
-                break;
-            case 14:
-                lineChart.setTitle("Runtime Efficiency of Twitter constructor");
-                break;
-            default:
-                dualGraph = false;
-                break;
-        }
+        lineChart.setTitle("Runtime Efficiency");
         lineChart.setAnimated(true); // disable animations
+        ArrayList<XYChart.Series<String, Number>> plots = new ArrayList<XYChart.Series<String, Number>>();
+        HashMap<XYChart.Series<String, Number>, Long> plotsRunTime = new HashMap<XYChart.Series<String, Number>, Long>();
 
-        // defining a series to display data
-        XYChart.Series<String, Number> fastSortSeries = new XYChart.Series<>();
-        fastSortSeries.setName("User Coded Algorithm");
 
-        //defining a series to display slow sort
-        XYChart.Series<String, Number> slowSortSeries = new XYChart.Series<>();
-        slowSortSeries.setName("Benchmark Algorithm");
+        for (CheckBox box : toggles) {
+            if (box.isSelected()) {
+                XYChart.Series<String, Number> series = new XYChart.Series<>();
+                series.setName(box.getText());  //TODO: Better naming
+                plotsRunTime.put(series, 0L);
+            }
+        }
 
 
         // add series to chart
-        lineChart.getData().add(fastSortSeries);
-        if (dualGraph) {
-            lineChart.getData().add(slowSortSeries);
-        }
+        lineChart.getData().addAll(plotsRunTime.keySet());
 
         // setup scene
         //Group g = new Group(lineChart1);
@@ -269,107 +226,89 @@ public class Controller implements Initializable {
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
         AtomicInteger counter = new AtomicInteger();
-        boolean finalDualGraph = dualGraph;
         scheduledExecutorService.scheduleAtFixedRate(() -> {
             counter.getAndIncrement();
             Long value;
             Long slowValue;
-            switch (input) {
-                case 0:
-                    value = BM.timedSort(counter.get());
-                    slowValue = BM.timedSlowSort(counter.get());
-                    break;
-                case 1:
-                    value = BM.timedGetAtSize(counter.get());
-                    slowValue = BM.timedGetAtSizeRefernce(counter.get());
-                    break;
-                case 2:
-                    value = BM.timedPut(counter.get());
-                    slowValue = BM.timedPutReference(counter.get());
-                    break;
-                case 3:
-                    value = BM.timedIteratorNext(counter.get());
-                    slowValue = 0L;
-                    break;
-                case 4:
-                    value = BM.timedIteratorHasNext(counter.get());
-                    slowValue = 0L;
-                    break;
-                case 5:
-                    value = BM.timedInterator(counter.get());
-                    slowValue = 0L;
-                    break;
-                case 6:
-                    value = BM.timedRehash(counter.get());
-                    slowValue = 0L;
-                    break;
-                case 7:
-                    value = BM.timedValues(counter.get());
-                    slowValue = BM.timedValuesReference(counter.get());
-                    break;
-                case 8:
-                    value = BM.timedKeys(counter.get());
-                    slowValue = BM.timedKeysReference(counter.get());
-                    break;
-                case 9:
-                    value = BM.timedRemove(counter.get());
-                    slowValue = BM.timedRemoveReference(counter.get());
-                    break;
-                case 10:        //TODO: Twitter.add
-                    value = tBM.timedTwitterAdd(counter.get());
-                    slowValue = BM.timedPut(counter.get());
-                    break;
-                case 11:        //TODO: Twitter.Date
-                    value = tBM.timedTwitterByDate(counter.get());
-                    slowValue = 0L;
-                    break;
-                case 12:        //TODO: Twitter.Auth
-                    value = tBM.timedTwitterByAuth(counter.get());
-                    slowValue = 0L;
-                    break;
-                case 13:        //TODO: Twitter.trend
-                    value = tBM.timedTwitterTrending(counter.get(), counter.get() / 3);
-                    slowValue = 0L;
-                    break;
-                case 14:        //TODO: Twitter()
-                    value = tBM.timedTwitterConstructor(counter.get(), counter.get());        //TODO: better solution for ratio of tweets to stopwords?
-                    //TODO: Separate graph for increasing stopwords?
-                    slowValue = 0L;
-                    break;
-                default:
-                    value = (long) 0;
-                    slowValue = 0L;
-                    break;
+            for (Map.Entry<XYChart.Series<String, Number>, Long> entry : plotsRunTime.entrySet()) {
+                entry.setValue(ComputeRuntime(entry.getKey().getName(), counter.get()));
             }
+
 
             //System.out.println("[Grapher] Data updated.");
 
             // Update the chart
             Platform.runLater(() -> {
-                // get current time
-                Date now = new Date();
-                // put random number with current time
-                if (finalDualGraph) {
-                    slowSortSeries.getData().add(
-                            new XYChart.Data<>(Integer.toString(counter.get()), slowValue));
-                }
-                fastSortSeries.getData().add(
-                        new XYChart.Data<>(Integer.toString(counter.get()), value));
-
-                if (fastSortSeries.getData().size() > WINDOW_SIZE)
-                    fastSortSeries.getData().remove(0);
-
-                if (slowSortSeries.getData().size() > WINDOW_SIZE)
-                    slowSortSeries.getData().remove(0);
-
-                if (fastSortSeries.getData().size() > 75) {
-                    lineChart.setVerticalGridLinesVisible(false);
-                    lineChart.setHorizontalGridLinesVisible(false);
-                    lineChart.setCreateSymbols(false);
+                for (Map.Entry<XYChart.Series<String, Number>, Long> entry : plotsRunTime.entrySet()) {
+                    entry.getKey().getData().add(new XYChart.Data<String, Number>(Integer.toString(counter.get()), entry.getValue()));
+                    if (entry.getKey().getData().size() > 75) {
+                        lineChart.setVerticalGridLinesVisible(false);
+                        lineChart.setHorizontalGridLinesVisible(false);
+                        lineChart.setCreateSymbols(false);
+                    }
                 }
             });
         }, 0, 250, TimeUnit.MILLISECONDS);
 
+    }
+
+    private long ComputeRuntime(String input, int count) {
+        if (GC_TurboMode.isSelected()) {
+            count *= GC_TurboFactor.getValue();
+        }
+        if (input.equals(GC_FastSort.getText())) {
+            return BM.timedSort(count);
+        } else if (input.equals(GC_Remove.getText())) {
+            return BM.timedRemove(count);
+        } else if (input.equals(GC_Rehash.getText())) {
+            return BM.timedRehash(count);
+        } else if (input.equals(GC_Values.getText())) {
+            return BM.timedValues(count);
+        } else if (input.equals(GC_Constructor.getText())) {
+            return BM.timedMyHashTable(count);
+        } else if (input.equals(GC_Keys.getText())) {
+            return BM.timedKeys(count);
+        } else if (input.equals(GC_Get.getText())) {
+            return BM.timedGetAtSize(count);
+        } else if (input.equals(GC_Put.getText())) {
+            return BM.timedPutAtSize(count);
+        } else if (input.equals(GC_ArrayListMergeSort.getText())) {
+            return BM.timedSortReference(count);
+        } else if (input.equals(GC_ProfSlowSort.getText())) {
+            return BM.timedSlowSort(count);
+        } else if (input.equals(GC_Iter.getText())) {
+            return BM.timedInterator(count);
+        } else if (input.equals(GC_Next.getText())) {
+            return BM.timedIteratorNext(count);
+        } else if (input.equals(GC_J_Constructor.getText())) {
+            return BM.timedMyHashTableReference(count);
+        } else if (input.equals(GC_J_Put.getText())) {
+            return BM.timedPutReference(count);
+        } else if (input.equals(GC_J_Get.getText())) {
+            return BM.timedGetAtSizeRefernce(count);
+        } else if (input.equals(GC_J_Remove.getText())) {
+            return BM.timedRemoveReference(count);
+        } else if (input.equals(GC_J_Values.getText())) {
+            return BM.timedValuesReference(count);
+        } else if (input.equals(GC_J_Keys.getText())) {
+            return BM.timedKeysReference(count);
+        } else if (input.equals(GC_Twit_Trending.getText())) {
+            return tBM.timedTwitterTrending(count, (int) (count * GC_StopWordFactor.getValue()));
+        } else if (input.equals(GC_Twit_Constructor.getText())) {
+            return tBM.timedTwitterConstructor(count, (int) (count * GC_StopWordFactor.getValue()));
+        } else if (input.equals(GC_Twit_ByDate.getText())) {
+            return tBM.timedTwitterByDate(count);
+        } else if (input.equals(GC_Twit_ByAuth.getText())) {
+            return tBM.timedTwitterByAuth(count);
+        } else if (input.equals(GC_Twit_Add.getText())) {
+            return tBM.timedTwitterAdd(count);
+        } else if (input.equals(GC_Twit_ConstructorII.getText())) {
+            return tBM.timedTwitterConstructor(count, (int) (count * GC_StopWordFactorII.getValue()));
+        } else if (input.equals(GC_Twit_TrendingII.getText())) {
+            return tBM.timedTwitterTrending(count, (int) (count * GC_StopWordFactorII.getValue()));
+        } else {
+            return 0L;
+        }
     }
 
     private void enableDarkTheme() {

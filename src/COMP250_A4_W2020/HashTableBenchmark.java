@@ -382,4 +382,26 @@ public class HashTableBenchmark {
         return output;
     }
 
+    public long timedMyHashTable(int count) {
+        long startTime = System.nanoTime();
+        MyHashTable<MyHashTable<String, String>, MyHashTable<String, String>> ht = new MyHashTable<MyHashTable<String, String>, MyHashTable<String, String>>(count);
+        long endTime = System.nanoTime();
+        return endTime - startTime;
+    }
+
+    public long timedSortReference(int count) {
+        ArrayList<String> testSubject = new ArrayList<>(rand.nextStopWords(count));
+        long startTime = System.nanoTime();
+        testSubject.sort(String::compareToIgnoreCase);
+        long endTime = System.nanoTime();
+        return endTime - startTime;
+
+    }
+
+    public long timedMyHashTableReference(int count) {
+        long startTime = System.nanoTime();
+        Hashtable<Hashtable<String, String>, Hashtable<String, String>> ht = new Hashtable<Hashtable<String, String>, Hashtable<String, String>>(count);
+        long endTime = System.nanoTime();
+        return endTime - startTime;
+    }
 }

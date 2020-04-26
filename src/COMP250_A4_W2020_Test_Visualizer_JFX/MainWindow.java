@@ -23,8 +23,8 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("MainWindowDesign.fxml"));
         primaryStage.setTitle("Runtime Efficiency Wizard - <3 sashaphoto.ca Tweet Visualizer");
-        primaryStage.setScene(new Scene(root, 900, 750));
-        primaryStage.setResizable(true);
+        primaryStage.setScene(new Scene(root, 900, 800));
+        primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
