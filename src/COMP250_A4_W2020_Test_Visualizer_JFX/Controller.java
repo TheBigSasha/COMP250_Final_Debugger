@@ -1,8 +1,8 @@
 package COMP250_A4_W2020_Test_Visualizer_JFX;
 
 import COMP250_A4_W2020.HashTableBenchmark;
-import COMP250_A4_W2020.HashTableStressTester;
 import COMP250_A4_W2020.HashTableUnitTester;
+import COMP250_A4_W2020.TwitterBenchmark;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -34,7 +34,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Controller implements Initializable {
-    private HashTableBenchmark bm;
+    private HashTableBenchmark BM;
+    private TwitterBenchmark tBM;
     private static final String musicFile = "src/COMP250_A4_W2020_Test_Visualizer_JFX/minecraft_damage.mp3";
     private ScheduledExecutorService scheduledExecutorService;
     //BENCHMARKING
@@ -47,7 +48,9 @@ public class Controller implements Initializable {
     @FXML
     private MenuItem menu_iterBM, menu_hasNextBM, menu_nextBM,
             menu_rehashBM, menu_keysBM, menu_valuesBM,
-            menu_removeBM, menu_sortBM, menu_putBM, menu_getBM;
+            menu_removeBM, menu_sortBM, menu_putBM, menu_getBM,
+            menu_twitConstBM, menu_twitAddBM, menu_twitDateBM,
+            menu_twitAuthBM, menu_twitTrendBM;
     @FXML
     private Slider sizeSlider;
     @FXML
@@ -59,7 +62,7 @@ public class Controller implements Initializable {
     @FXML
     private Pane UnitTesting;
     @FXML
-    private MenuItem UT_RunAll;
+    private MenuItem UT_RunAll, UT_RunBasicTwitter;
     @FXML
     private Button UT_RunBtn;
     @FXML
@@ -73,7 +76,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         addListeners();
-        bm = new HashTableBenchmark();
+        BM = new HashTableBenchmark();
         //playOof();
         initalizeGraph(0);
     }
@@ -99,16 +102,6 @@ public class Controller implements Initializable {
     }
 
     private void addListeners() {
-        /*  sortBM.setOnAction(e -> initalizeGraph(0));
-        getBM.setOnAction(e -> initalizeGraph(1));
-        putBM.setOnAction(e -> initalizeGraph(2));
-        nextBM.setOnAction(e -> initalizeGraph(3));
-        hasNextBM.setOnAction(e -> initalizeGraph(4));
-        iterBM.setOnAction(e -> initalizeGraph(5));
-        rehashBM.setOnAction(e -> initalizeGraph(6));
-        valuesBM.setOnAction(e -> initalizeGraph(7));
-        keysBM.setOnAction(e -> initalizeGraph(8));
-        removeBM.setOnAction(e -> initalizeGraph(9));*/
         menu_sortBM.setOnAction(e -> initalizeGraph(0));
         menu_getBM.setOnAction(e -> initalizeGraph(1));
         menu_putBM.setOnAction(e -> initalizeGraph(2));
@@ -119,12 +112,12 @@ public class Controller implements Initializable {
         menu_valuesBM.setOnAction(e -> initalizeGraph(7));
         menu_keysBM.setOnAction(e -> initalizeGraph(8));
         menu_removeBM.setOnAction(e -> initalizeGraph(9));
+        menu_twitAddBM.setOnAction(e -> initalizeGraph(10));
+        menu_twitDateBM.setOnAction(e -> initalizeGraph(11));
+        menu_twitAuthBM.setOnAction(e -> initalizeGraph(12));
+        menu_twitTrendBM.setOnAction(e -> initalizeGraph(13));
+        menu_twitConstBM.setOnAction(e -> initalizeGraph(14));
         dark_theme_switch.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-           /* if (isSelected) {
-                enableDarkTheme();
-            } else {
-                disableDarkTheme();
-            }*/
             playOof();
         });
         sashaPhotoLink.setOnAction(e -> {
@@ -140,6 +133,7 @@ public class Controller implements Initializable {
         });
         UT_RunBtn.setOnAction(e -> runAllTests());
         UT_RunAll.setOnAction(e -> runUnitTests());
+        UT_RunBasicTwitter.setOnAction(e -> runBasicTwitterTest());
     }
 
     private void playOof() {
@@ -149,19 +143,39 @@ public class Controller implements Initializable {
     }
 
     private void runUnitTests() {
-        HashTableUnitTester UT = new HashTableUnitTester(bm.getRand());
+        HashTableUnitTester UT = new HashTableUnitTester(BM.getRand());
         UnitTestTextArea.setText(UT.runTests());
     }
 
-    private void runAllTests() {
-        HashTableUnitTester UT = new HashTableUnitTester(bm.getRand());
-        UnitTestTextArea.setText(UT.runTests());
+    private void runBasicTwitterTest() {
         try {
+            UnitTestTextArea.appendText("\n\n\n" + tBM.basicTwitterTest());
+        } catch (NullPointerException e) {
+            tBM = new TwitterBenchmark();
+            try {
+                UnitTestTextArea.appendText("\n\n\n" + tBM.basicTwitterTest());
+            } catch (Exception f) {
+                f.printStackTrace();
+                UnitTestTextArea.appendText("\n\n\n FAILED TO RUN BASIC TWITTER TEST");
+            }
+        } catch (Exception e) {
+            UnitTestTextArea.appendText("\n\n\n FAILED TO RUN BASIC TWITTER TEST");
+        }
+    }
+
+    private void runAllTests() {
+        UnitTestTextArea.setEditable(false);
+        UnitTestTextArea.setWrapText(true);
+        //UnitTestTextArea.setFont(javafx.scene.text.Font.font(Font.SERIF));
+        UnitTestTextArea.setText("Running tests. This will take a while.");
+        runUnitTests();
+        /*try {
             HashTableStressTester.main(new String[0]);
             UnitTestTextArea.appendText("\n \n \nRan prof supplied tests. Check console for results.");
         } catch (Exception e) {
             UnitTestTextArea.appendText("\n\n\nAttempted to run prof supplied test, but it threw exception " + e.getMessage());
-        }
+        }*/
+        runBasicTwitterTest();
         UnitTestTextArea.appendText("\n \n \nMore tests coming soon <3");
     }
 
@@ -193,9 +207,11 @@ public class Controller implements Initializable {
                 lineChart.setTitle("Runtime Efficiency of FastSort");
                 break;
             case 1:
+                dualGraph = true;
                 lineChart.setTitle("Runtime Efficiency of Get");
                 break;
             case 2:
+                dualGraph = true;
                 lineChart.setTitle("Runtime Efficiency of Put");
                 break;
             case 3:
@@ -211,13 +227,31 @@ public class Controller implements Initializable {
                 lineChart.setTitle("Runtime Efficiency of rehash");
                 break;
             case 7:
+                dualGraph = true;
                 lineChart.setTitle("Runtime Efficiency of values");
                 break;
             case 8:
+                dualGraph = true;
                 lineChart.setTitle("Runtime Efficiency of keys");
                 break;
             case 9:
+                dualGraph = true;
                 lineChart.setTitle("Runtime Efficiency of remove");
+                break;
+            case 10:
+                lineChart.setTitle("Runtime Efficiency of Twitter.add");
+                break;
+            case 11:
+                lineChart.setTitle("Runtime Efficiency of Twitter.byDate");
+                break;
+            case 12:
+                lineChart.setTitle("Runtime Efficiency of Twitter.byAuth");
+                break;
+            case 13:
+                lineChart.setTitle("Runtime Efficiency of Twitter.trend");
+                break;
+            case 14:
+                lineChart.setTitle("Runtime Efficiency of Twitter constructor");
                 break;
             default:
                 dualGraph = false;
@@ -261,52 +295,74 @@ public class Controller implements Initializable {
             Long slowValue;
             switch (input) {
                 case 0:
-                    value = bm.timedSort(counter.get());
-                    slowValue = bm.timedSlowSort(counter.get());
+                    value = BM.timedSort(counter.get());
+                    slowValue = BM.timedSlowSort(counter.get());
                     break;
                 case 1:
-                    value = bm.timedGetAtSize(counter.get());
+                    value = BM.timedGetAtSize(counter.get());
                     System.out.println("[Grapher] Value on Y axis is: " + value);
-                    slowValue = 0L;
+                    slowValue = BM.timedGetAtSizeRefernce(counter.get());
                     break;
                 case 2:
-                    value = bm.timedPut(counter.get());
+                    value = BM.timedPut(counter.get());
                     System.out.println("[Grapher] Value on Y axis is: " + value);
-                    slowValue = 0L;
+                    slowValue = BM.timedPutReference(counter.get());
                     break;
                 case 3:
-                    value = bm.timedIteratorNext(counter.get());
+                    value = BM.timedIteratorNext(counter.get());
                     System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = 0L;
                     break;
                 case 4:
-                    value = bm.timedIteratorHasNext(counter.get());
+                    value = BM.timedIteratorHasNext(counter.get());
                     System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = 0L;
                     break;
                 case 5:
-                    value = bm.timedInterator(counter.get());
+                    value = BM.timedInterator(counter.get());
                     System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = 0L;
                     break;
                 case 6:
-                    value = bm.timedRehash(counter.get());
+                    value = BM.timedRehash(counter.get());
                     System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = 0L;
                     break;
                 case 7:
-                    value = bm.timedValues(counter.get());
+                    value = BM.timedValues(counter.get());
                     System.out.println("[Grapher] Value on Y axis is: " + value);
-                    slowValue = 0L;
+                    slowValue = BM.timedValuesReference(counter.get());
                     break;
                 case 8:
-                    value = bm.timedKeys(counter.get());
+                    value = BM.timedKeys(counter.get());
                     System.out.println("[Grapher] Value on Y axis is: " + value);
-                    slowValue = 0L;
+                    slowValue = BM.timedKeysReference(counter.get());
                     break;
                 case 9:
-                    value = bm.timedRemove(counter.get());
+                    value = BM.timedRemove(counter.get());
                     System.out.println("[Grapher] Value on Y axis is: " + value);
+                    slowValue = BM.timedRemoveReference(counter.get());
+                    break;
+                case 10:        //TODO: Twitter.add
+                    value = tBM.timedTwitterAdd(counter.get());
+                    slowValue = BM.timedPut(counter.get());
+                    break;
+                case 11:        //TODO: Twitter.Date
+                    value = tBM.timedTwitterByDate(1);
+                    slowValue = 0L;
+                    break;
+                case 12:        //TODO: Twitter.Auth
+                    value = tBM.timedTwitterByAuth(1);
+                    slowValue = 0L;
+                    break;
+                case 13:        //TODO: Twitter.trend
+                    value = tBM.timedTwitterTrending(1);
+                    slowValue = 0L;
+                    break;
+                case 14:        //TODO: Twitter()
+                    System.out.println("[Grapher] Testing speed of Twitter()");
+                    value = tBM.timedTwitterConstructor(counter.get(), counter.get());        //TODO: better solution for ratio of tweets to stopwords?
+                    //TODO: Separate graph for increasing stopwords?
                     slowValue = 0L;
                     break;
                 default:

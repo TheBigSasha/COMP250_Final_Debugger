@@ -569,6 +569,8 @@ public class RandomTweets extends Random {
             pastUsers.add(newname);
             return newname;
         }
+
+        //TODO: Stop words generator
     }
 
 }

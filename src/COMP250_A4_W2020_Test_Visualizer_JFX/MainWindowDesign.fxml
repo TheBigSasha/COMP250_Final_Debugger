@@ -50,6 +50,18 @@
                         <MenuItem id="menu_hasNextBM" fx:id="menu_hasNextBM" mnemonicParsing="false" text="HasNext"/>
                      </items>
                   </Menu>
+                  <Menu mnemonicParsing="false" text="Twitter">
+                     <items>
+                        <MenuItem id="menu_twitConstBM" fx:id="menu_twitConstBM" mnemonicParsing="false"
+                                  text="Constructor"/>
+                        <MenuItem id="menu_twitAddBM" fx:id="menu_twitAddBM" mnemonicParsing="false" text="Add Tweet"/>
+                        <MenuItem id="menu_twitDateBM" fx:id="menu_twitDateBM" mnemonicParsing="false" text="By Date"/>
+                        <MenuItem id="menu_twitAuthBM" fx:id="menu_twitAuthBM" mnemonicParsing="false"
+                                  text="By Author"/>
+                        <MenuItem id="menu_twitTrendBM" fx:id="menu_twitTrendBM" mnemonicParsing="false"
+                                  text="Trending"/>
+                     </items>
+                  </Menu>
                </items>
             </MenuButton>
             <CheckBox fx:id="dark_theme_switch" layoutX="703.0" layoutY="17.0" mnemonicParsing="false"
@@ -71,6 +83,8 @@
          <MenuButton layoutX="798.0" layoutY="14.0" mnemonicParsing="false" text="Test Cases">
             <items>
                <MenuItem id="UT_RunAll" fx:id="UT_RunAll" mnemonicParsing="false" text="Test MyHashTable()"/>
+               <MenuItem id="UT_RunBasicTwitter" fx:id="UT_RunBasicTwitter" mnemonicParsing="false"
+                         text="Basic Twitter Test"/>
             </items>
          </MenuButton>
          <Button fx:id="UT_RunBtn" layoutX="751.0" layoutY="14.0" mnemonicParsing="false" text="Run"/>
