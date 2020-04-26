@@ -106,7 +106,7 @@ public class RandomTweets extends Random {
             passed -= 1;
         }
         try {
-            initializeSongLyrics(); //TODO: Initialize this using a URL of a self hosted file :)
+            initializeSongLyrics();
         } catch (IOException e) {
             System.out.println("[RandomTweets / InitializeDatabases] Failed to get song lyrics from internet. Check your connection.");
             passed -= 1;
