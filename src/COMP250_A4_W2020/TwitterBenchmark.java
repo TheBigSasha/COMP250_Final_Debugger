@@ -362,4 +362,12 @@ public class TwitterBenchmark extends HashTableBenchmark {
         }
         return endTime - startTime;
     }
+
+    public ArrayList<Tweet> getProfTweets() {
+        return this.tweets;
+    }
+
+    public ArrayList<String> getProfStopWords() {
+        return this.stopWords;
+    }
 }

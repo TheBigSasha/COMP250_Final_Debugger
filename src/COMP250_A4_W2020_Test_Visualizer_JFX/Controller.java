@@ -2,6 +2,7 @@ package COMP250_A4_W2020_Test_Visualizer_JFX;
 
 import COMP250_A4_W2020.HashTableBenchmark;
 import COMP250_A4_W2020.HashTableUnitTester;
+import COMP250_A4_W2020.Tweet;
 import COMP250_A4_W2020.TwitterBenchmark;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -68,9 +70,28 @@ public class Controller implements Initializable {
     private TextArea UnitTestTextArea;
 
     //FUN DEMOS
+    private final ArrayList<String> trendOptions = new ArrayList<String>(Arrays.asList("Bee Movie script (small)", "real tweets (medium)",
+            "a bunch of songs (colossal)", "a bunch of songs (large)",
+            "my own URL"));
+    @FXML
+    private TextArea Fun_LastOpRuntime;
+    @FXML
+    private ProgressIndicator Fun_Progress;
     @FXML
     private Pane FunDemos;
-
+    @FXML
+    private Spinner<Integer> Fun_NumOfTweetsAbout, Fun_CommonWordsNum;
+    @FXML
+    private ChoiceBox<String> FunTrendingSelector;
+    @FXML
+    private Button Fun_GoTrends, Fun_GoSong, Fun_GoTweets, Fun_TweetsAboutRand, Fun_CommonWordsRand,
+            Fun_GoWords, Fun_SingAboutRand;
+    @FXML
+    private TextField Fun_TweetsAbout, Fun_SongKeyword;
+    @FXML
+    private TextArea Fun_Output;
+    @FXML
+    private Slider Fun_StopWordFactor;
     //ALL
     @FXML
     private Label BM_Title, UT_Title, FUN_Title;
@@ -132,8 +153,129 @@ public class Controller implements Initializable {
         GC_Reset.setOnAction(e -> resetButtons());
         GC_Refresh.setOnAction(e -> initalizeGraph(0));
         GC_Help.setOnAction(e -> openHelpPage());
+        Fun_GoWords.setOnAction(e -> fun_words(false));
+        Fun_GoSong.setOnAction(e -> fun_sing(false));
+        Fun_GoTrends.setOnAction(e -> fun_trend());
+        Fun_GoTweets.setOnAction(e -> fun_tweets(false));
+        FunTrendingSelector.getItems().addAll(trendOptions);
+        FunTrendingSelector.setValue(trendOptions.get(0));
         for (CheckBox box : toggles) {
             box.setOnMouseClicked(e -> initalizeGraph(0));
+        }
+        Fun_CommonWordsNum.setValueFactory(new SpinnerValueFactory<Integer>() {
+            @Override
+            public void decrement(int i) {
+                setValue(getValue() - i);
+                if (getValue() <= 0) {
+                    setValue(1);
+                }
+                if (getValue() > 200) {
+                    setValue(200);
+                }
+            }
+
+            @Override
+            public void increment(int i) {
+                setValue(getValue() + i);
+                if (getValue() <= 0) {
+                    setValue(1);
+                }
+                if (getValue() > 200) {
+                    setValue(200);
+                }
+            }
+        });
+        Fun_CommonWordsNum.getValueFactory().setValue(5);
+        Fun_NumOfTweetsAbout.setValueFactory(new SpinnerValueFactory<Integer>() {
+            @Override
+            public void decrement(int i) {
+                setValue(getValue() - i);
+                if (getValue() <= 0) {
+                    setValue(1);
+                }
+                if (getValue() > 200) {
+                    setValue(200);
+                }
+            }
+
+            @Override
+            public void increment(int i) {
+                setValue(getValue() + i);
+                if (getValue() <= 0) {
+                    setValue(1);
+                }
+                if (getValue() > 200) {
+                    setValue(200);
+                }
+            }
+        });
+        Fun_NumOfTweetsAbout.getValueFactory().setValue(5);
+        Fun_SingAboutRand.setOnAction(e -> fun_sing(true));
+        Fun_CommonWordsRand.setOnAction(e -> fun_words(true));
+        Fun_TweetsAboutRand.setOnAction(e -> fun_tweets(true));
+    }
+
+    private void fun_words(boolean random) {
+        if (random) {
+            Fun_CommonWordsNum.getValueFactory().setValue(1 + BM.getRand().nextInt(49));
+        } else {
+            Fun_Output.setText("");
+            ArrayList<String> words = BM.getRand().nextStopWords(Fun_CommonWordsNum.getValue());
+            for (String s : words) {
+                Fun_Output.appendText(s + "\n");
+            }
+        }
+    }
+
+    private void fun_sing(boolean random) {
+        if (random) {
+            String[] content = BM.getRand().nextContent().split(" ");
+            Fun_SongKeyword.setText(content[content.length / (2)].replace(",", "").strip().trim());
+        } else {
+            try {
+                Fun_Output.setText(BM.getRand().sing(Fun_SongKeyword.getText()));
+            } catch (Exception e) {
+                Fun_Output.setText(BM.getRand().sing());
+            }
+        }
+
+    }
+
+    private void fun_trend() {
+        Fun_Progress.setOpacity(1);
+        Fun_Progress.setProgress(0.1);
+        String choice = FunTrendingSelector.getValue();
+        long StartTime = System.nanoTime();
+        if (choice.equals(trendOptions.get(0))) { //Bee Movie Script
+            Fun_Output.setText(tBM.getRand().nextTrend(0, (int) Fun_StopWordFactor.getValue()));
+        } else if (choice.equals(trendOptions.get(1))) {  //Real Tweets
+            Fun_Output.setText(tBM.getRand().nextTrend(1, (int) Fun_StopWordFactor.getValue()));
+        } else if (choice.equals(trendOptions.get(2))) { //A bunch of songs
+            Fun_Output.setText(tBM.getRand().nextTrend(2, (int) Fun_StopWordFactor.getValue()));
+        } else if (choice.equals(trendOptions.get(3))) {
+            Fun_Output.setText(tBM.getRand().nextTrend(3, (int) Fun_StopWordFactor.getValue()));
+        } else if (choice.equals(trendOptions.get(4))) { //Custom URL
+            //TODO:
+            Fun_Output.setText("Not so fast, buckaroo. This is still in development.");
+        }
+        long endTime = System.nanoTime();
+        Fun_Progress.setProgress(1);
+        Fun_LastOpRuntime.setText((endTime - StartTime) + " nanos");
+        Fun_Progress.setOpacity(0);
+
+    }
+
+    private void fun_tweets(boolean random) {
+        if (random) {
+            Fun_NumOfTweetsAbout.getValueFactory().setValue(1 + BM.getRand().nextInt(49));
+            String[] content = BM.getRand().nextContent().split(" ");
+            Fun_TweetsAbout.setText(content[content.length / (2)].replace(",", "").strip().trim());
+        } else {
+            Tweet[] generated = BM.getRand().nextTweets(Fun_NumOfTweetsAbout.getValue(), true, Fun_TweetsAbout.getText());
+            Fun_Output.setText("");
+            for (Tweet t : generated) {
+                Fun_Output.appendText(t.toString() + "\n");
+            }
         }
     }
 
