@@ -84,7 +84,7 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         addListeners();
         BM = new HashTableBenchmark();
-        tBM = new TwitterBenchmark();
+        tBM = new TwitterBenchmark(BM.getRand());
         //playOof();
         initalizeGraph(0);
     }
@@ -355,7 +355,7 @@ public class Controller implements Initializable {
                     slowValue = 0L;
                     break;
                 case 13:        //TODO: Twitter.trend
-                    value = tBM.timedTwitterTrending(counter.get());
+                    value = tBM.timedTwitterTrending(counter.get(), counter.get() / 3);
                     slowValue = 0L;
                     break;
                 case 14:        //TODO: Twitter()

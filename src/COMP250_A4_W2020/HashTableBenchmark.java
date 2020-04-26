@@ -12,6 +12,11 @@ public class HashTableBenchmark {
         rand = new RandomTweets(10);
     }
 
+    public HashTableBenchmark(RandomTweets rand) {
+        userTable = new MyHashTable<String, Tweet>(10);
+        this.rand = rand;
+    }
+
     public RandomTweets getRand() {
         return rand;
     }

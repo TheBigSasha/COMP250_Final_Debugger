@@ -10,6 +10,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//TODO: Improve keyword searching
+
 /**
  * <bold>Tweet Randomizer</bold>
  * <p>
@@ -19,13 +21,23 @@ import java.util.regex.Pattern;
  * @version 1.0
  */
 public class RandomTweets extends Random {
-    private static final int SEARCH_RECURSION_LIMIT = 2200;
-    private File Lastnames = new File("src/COMP250_A4_W2020/Put Your java files here.txt");
-    private final ArrayList<String> names = new ArrayList<String>();
+    //URLs
+    private static final String namesURL = "https://raw.githubusercontent.com/TheBigSasha/COMP250_Final_Debugger/fb8c2f8b65e7d90a41f7320ed044d3772db79555/src/COMP250_A4_W2020/Put%20Your%20java%20files%20here.txt";
     private final File songLyrics = new File("src/COMP250_A4_W2020/songdata.csv");
+    private static final String songDataURL = "https://raw.githubusercontent.com/TheBigSasha/COMP250_Final_Debugger/fb8c2f8b65e7d90a41f7320ed044d3772db79555/src/COMP250_A4_W2020/songdata.csv";
     private final ArrayList<String> beeMovieScript = new ArrayList<>();
     private final ArrayList<String> songLyric = new ArrayList<>();
     private final ArrayList<String> pastUsers = new ArrayList<>();
+    private static final String mostCommonWordsURL = "https://raw.githubusercontent.com/first20hours/google-10000-english/master/20k.txt";
+    private static final String beeMovieURL = "https://web.njit.edu/~cm395/theBeeMovieScript/";
+    //Parameters
+    private static final int songFactor = 3;
+    private static final int SEARCH_RECURSION_LIMIT = 2200;
+    //Databases
+    private final ArrayList<String> names = new ArrayList<String>();
+    private final ArrayList<String> mostCommonWords = new ArrayList<>();
+    //Local Files
+    private File Lastnames = new File("src/COMP250_A4_W2020/Put Your java files here.txt");
 
     /**
      * An enhanced randomizer for Comp 250 A4 Winter 2020 with specified seed
@@ -86,19 +98,36 @@ public class RandomTweets extends Random {
 
     private void initializeDatabases() {
         System.out.println("[RandomTweets / InitializeDatabases] Starting database initialization, this may take a bit.");
-        int passed = 3;
+        int passed = 4;
         try {
             initializeBeeMovie();
         } catch (IOException e) {
             System.out.println("[RandomTweets / InitializeDatabases] Failed to fetch bee movie script from internet. Check your connection.");
             passed -= 1;
         }
-        initializeSongLyrics(); //TODO: Initialize this using a URL of a self hosted file :)
-        initializeNames();
+        try {
+            initializeSongLyrics(); //TODO: Initialize this using a URL of a self hosted file :)
+        } catch (IOException e) {
+            System.out.println("[RandomTweets / InitializeDatabases] Failed to get song lyrics from internet. Check your connection.");
+            passed -= 1;
+        }
+        try {
+            initializeNames();
+        } catch (IOException e) {
+            System.out.println("[RandomTweets / InitializeDatabases] Failed to get  names from internet. Check your connection.");
+            passed -= 1;
+        }
+        try {
+            initializeCommonWords();
+        } catch (IOException e) {
+            passed -= 1;
+            System.out.println("[RandomTweets / InitializeDatabases] Failed to get common words from internet. Check your connection.");
+        }
+
         System.out.println("[RandomTweets / InitializeDatabases] " + passed + "/3 databases initialized!");
     }
 
-    private void initializeNames() {
+    private void initializeNames() throws IOException {
         try {
             Scanner scanner = new Scanner(Lastnames);
             while (scanner.hasNextLine()) {
@@ -126,15 +155,36 @@ public class RandomTweets extends Random {
                             names.add(scanner.nextLine());
                         }
                     } catch (FileNotFoundException h) {
+                        // Make a URL to the web page
+                        URL names = new URL(namesURL);
+                        // Get the input stream through URL Connection
+                        URLConnection con = names.openConnection();
+                        InputStream is = con.getInputStream();
+
+
+                        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+                        String line = null;
+                        while ((line = br.readLine()) != null) {
+                            if (line.endsWith(";") || line.strip().startsWith("#") || line.startsWith("<") || line.startsWith("/") || line.startsWith(".") || line.startsWith("{") || line.startsWith("}") || line.isBlank()) {
+
+                            } else {
+                                if (line.startsWith("- ")) {
+                                    line = line.replace("- ", "");
+                                }
+                                this.names.add(line);
+                                //System.out.println(line);
+                            }
+                        }
+                    }
                     }
                 }
             }
         }
-    }
 
     private void initializeBeeMovie() throws IOException {
         // Make a URL to the web page
-        URL beeMovie = new URL("https://web.njit.edu/~cm395/theBeeMovieScript/");
+        URL beeMovie = new URL(beeMovieURL);
         // Get the input stream through URL Connection
         URLConnection con = beeMovie.openConnection();
         InputStream is = con.getInputStream();
@@ -156,7 +206,31 @@ public class RandomTweets extends Random {
         }
     }
 
-    private void initializeSongLyrics() {
+    private void initializeCommonWords() throws IOException {
+        // Make a URL to the web page
+        URL names = new URL(mostCommonWordsURL);
+        // Get the input stream through URL Connection
+        URLConnection con = names.openConnection();
+        InputStream is = con.getInputStream();
+
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+        String line = null;
+        while ((line = br.readLine()) != null) {
+            if (line.endsWith(";") || line.strip().startsWith("#") || line.startsWith("<") || line.startsWith("/") || line.startsWith(".") || line.startsWith("{") || line.startsWith("}") || line.isBlank()) {
+
+            } else {
+                if (line.startsWith("- ")) {
+                    line = line.replace("- ", "");
+                }
+                mostCommonWords.add(line);
+                //System.out.println(line);
+            }
+        }
+    }
+
+    private void initializeSongLyrics() throws IOException {
         try {
             Scanner scanner = new Scanner(songLyrics);
             scanner.useDelimiter(",");
@@ -172,6 +246,25 @@ public class RandomTweets extends Random {
             }
         } catch (FileNotFoundException e) {
             System.out.println("Song Lyrics file not found");
+            // Make a URL to the web page
+            URL songs = new URL(songDataURL);
+            // Get the input stream through URL Connection
+            URLConnection con = songs.openConnection();
+            InputStream is = con.getInputStream();
+
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            String line = null;
+            int counter = 0;
+            while ((line = br.readLine()) != null) {
+                if (counter % songFactor == 0 && !line.isBlank() && !line.startsWith("/")) {
+                    //System.out.println("adding a lyric to the lyrics list");
+
+                    songLyric.addAll(Arrays.asList(line.replaceAll("Chorus: ", "").replaceAll("\n\n", "").replaceAll("\"", "").split("\n")));
+                }
+                counter++;
+            }
         }
     }
 
@@ -569,8 +662,37 @@ public class RandomTweets extends Random {
             pastUsers.add(newname);
             return newname;
         }
+    }
 
-        //TODO: Stop words generator
+    /**
+     * Generates stop words, by first querying the 10,000 most commonly used English words and then by randomizing words.
+     *
+     * @param length number of words
+     * @return an ArrayList of words
+     */
+    public ArrayList<String> nextStopWords(int length) {
+        if (mostCommonWords.size() > length) {
+            return (ArrayList<String>) mostCommonWords.subList(0, length);
+        } else {
+            ArrayList<String> output = new ArrayList<>(mostCommonWords);
+            if (length < output.size() + names.size()) {
+                output.addAll(names.subList(0, length - mostCommonWords.size()));
+            } else {
+                output.addAll(names);
+                for (int i = output.size(); i < length; i++) {
+                    output.add(nextBeeMovieLine().substring(0, nextBound(5) + 5));
+                }
+            }
+            return output;
+        }
+    }
+
+    public Twitter nextTwitter(int numTweets, int numStopWords) {
+        ArrayList<String> toAddStopWords;
+        toAddStopWords = nextStopWords(numStopWords);
+        ArrayList<Tweet> toAddTweets;
+        toAddTweets = new ArrayList<>(Arrays.asList(nextTweets(numTweets, true)));
+        return new Twitter(toAddTweets, toAddStopWords);
     }
 
 }

@@ -10,8 +10,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TwitterBenchmark extends HashTableBenchmark {
+    //These are the prof supplied files
     private static final String stopWordsFileName = "stopWords.txt";
     private static final String tweetsFileName = "tester_tweets.csv";
+
+    private static final boolean useProfDataBases = true;
+
     private ArrayList<Tweet> tweets;
     private ArrayList<String> stopWords;
 
@@ -21,13 +25,18 @@ public class TwitterBenchmark extends HashTableBenchmark {
 
     }
 
+    public TwitterBenchmark(RandomTweets rand) {
+        super(rand);
+        readStressTestFiles(tweetsFileName, stopWordsFileName);
+    }
+
     public static void main(String[] args) {
         TwitterBenchmark tBM = new TwitterBenchmark();
         System.out.println("Sample constructor BM: " + tBM.timedTwitterConstructor(15, 15));
         System.out.println("Sample add BM: " + tBM.timedTwitterAdd(15));
         System.out.println("Sample byAuth BM: " + tBM.timedTwitterByAuth(15));
         System.out.println("Sample byDate BM: " + tBM.timedTwitterByDate(15));
-        System.out.println("Sample trendingTopics BM: " + tBM.timedTwitterTrending(15));
+        System.out.println("Sample trendingTopics BM: " + tBM.timedTwitterTrending(15, 15));
         System.out.println(tBM.basicTwitterTest());
     }
 
@@ -126,23 +135,25 @@ public class TwitterBenchmark extends HashTableBenchmark {
         return output.toString();
     }
 
-    public long timedTwitterConstructor(int numTweets, int numStopWords) {       //TODO: Freeze?
-        ArrayList<String> toAddStopWords = new ArrayList<String>();
-        if (numStopWords < stopWords.size()) {
-            toAddStopWords.addAll(stopWords.subList(0, numStopWords));
+    public long timedTwitterConstructor(int numTweets, int numStopWords) {
+        ArrayList<String> toAddStopWords;
+        if (numStopWords < stopWords.size() && useProfDataBases) {
+            toAddStopWords = new ArrayList<String>(stopWords.subList(0, numStopWords));
         } else {
-            if (!stopWords.isEmpty()) {
-                toAddStopWords.addAll(stopWords);
-                for (int i = 0; i < numStopWords - stopWords.size(); i++) {
-                    toAddStopWords.add(rand.nextName());
-                }
-            } else {
-                for (int i = 0; i < numStopWords; i++) {
-                    toAddStopWords.add(rand.nextName());
-                }
-            }
+            toAddStopWords = rand.nextStopWords(numStopWords);
         }
-        ArrayList<Tweet> toAddTweets = new ArrayList<>(Arrays.asList(rand.nextTweets(numTweets, true)));
+        ArrayList<Tweet> toAddTweets;
+        if (useProfDataBases) {
+            if (tweets.size() > numTweets) {
+                toAddTweets = new ArrayList<>(tweets.subList(0, numTweets));
+            } else {
+                toAddTweets = new ArrayList<>(tweets);
+                toAddTweets.addAll(Arrays.asList(rand.nextTweets(numTweets - tweets.size(), true)));
+            }
+        } else {
+            toAddTweets = new ArrayList<>(Arrays.asList(rand.nextTweets(numTweets, true)));
+        }
+
         long startTime = System.nanoTime();
         Twitter t = new Twitter(toAddTweets, toAddStopWords);
         long endTime = System.nanoTime();
@@ -242,15 +253,113 @@ public class TwitterBenchmark extends HashTableBenchmark {
         }
     }
 
-    public Long timedTwitterByDate(int i) {
-        return i ^ 15L;
+    public Long timedTwitterByDate(int numTweets) {
+        int numStopWords = 100;
+        ArrayList<String> toAddStopWords;
+        if (numStopWords < stopWords.size() && useProfDataBases) {
+            toAddStopWords = new ArrayList<String>(stopWords.subList(0, numStopWords));
+        } else {
+            toAddStopWords = rand.nextStopWords(numStopWords);
+        }
+        ArrayList<Tweet> toAddTweets;
+        if (useProfDataBases) {
+            if (tweets.size() > numTweets) {
+                toAddTweets = new ArrayList<>(tweets.subList(0, numTweets));
+            } else {
+                toAddTweets = new ArrayList<>(tweets);
+                toAddTweets.addAll(Arrays.asList(rand.nextTweets(numTweets - tweets.size(), true)));
+            }
+        } else {
+            toAddTweets = new ArrayList<>(Arrays.asList(rand.nextTweets(numTweets, true)));
+        }
+        Twitter t = new Twitter(toAddTweets, toAddStopWords);
+
+        long startTime = System.nanoTime();
+        t.tweetsByDate(toAddTweets.get(toAddTweets.size() / 2).getDateAndTime().substring(0, 10));
+        long endTime = System.nanoTime();
+        return endTime - startTime;
     }
 
-    public Long timedTwitterByAuth(int i) {
-        return 15L;
+    public Long timedTwitterByAuth(int numTweets) {
+        int numStopWords = 100;
+        ArrayList<String> toAddStopWords;
+        if (numStopWords < stopWords.size() && useProfDataBases) {
+            toAddStopWords = new ArrayList<String>(stopWords.subList(0, numStopWords));
+        } else {
+            toAddStopWords = rand.nextStopWords(numStopWords);
+        }
+        ArrayList<Tweet> toAddTweets;
+        if (useProfDataBases) {
+            if (tweets.size() > numTweets) {
+                toAddTweets = new ArrayList<>(tweets.subList(0, numTweets));
+            } else {
+                toAddTweets = new ArrayList<>(tweets);
+                toAddTweets.addAll(Arrays.asList(rand.nextTweets(numTweets - tweets.size(), true)));
+            }
+        } else {
+            toAddTweets = new ArrayList<>(Arrays.asList(rand.nextTweets(numTweets, true)));
+        }
+        Twitter t = new Twitter(toAddTweets, toAddStopWords);
+
+        long startTime = System.nanoTime();
+        t.tweetsByDate(toAddTweets.get(toAddTweets.size() / 2).getAuthor());
+        long endTime = System.nanoTime();
+        return endTime - startTime;
     }
 
-    public Long timedTwitterTrending(int i) {
-        return 15L;
+    public Long timedTwitterTrending(int numTweets, int numStopWords) {
+        ArrayList<String> toAddStopWords;
+        if (numStopWords < stopWords.size() && useProfDataBases) {
+            toAddStopWords = new ArrayList<String>(stopWords.subList(0, numStopWords));
+        } else {
+            toAddStopWords = rand.nextStopWords(numStopWords);
+        }
+        ArrayList<Tweet> toAddTweets;
+        if (useProfDataBases) {
+            if (tweets.size() > numTweets) {
+                toAddTweets = new ArrayList<>(tweets.subList(0, numTweets));
+            } else {
+                toAddTweets = new ArrayList<>(tweets);
+                toAddTweets.addAll(Arrays.asList(rand.nextTweets(numTweets - tweets.size(), true)));
+            }
+        } else {
+            toAddTweets = new ArrayList<>(Arrays.asList(rand.nextTweets(numTweets, true)));
+        }
+        Twitter t = new Twitter(toAddTweets, toAddStopWords);
+
+        long startTime = System.nanoTime();
+        t.trendingTopics();
+        long endTime = System.nanoTime();
+        return endTime - startTime;
+
+    }
+
+    public long timedTwitterTrendingPrinted(int numTweets, int numStopWords) {
+        ArrayList<String> toAddStopWords;
+        if (numStopWords < stopWords.size() && useProfDataBases) {
+            toAddStopWords = new ArrayList<String>(stopWords.subList(0, numStopWords));
+        } else {
+            toAddStopWords = rand.nextStopWords(numStopWords);
+        }
+        ArrayList<Tweet> toAddTweets;
+        if (useProfDataBases) {
+            if (tweets.size() > numTweets) {
+                toAddTweets = new ArrayList<>(tweets.subList(0, numTweets));
+            } else {
+                toAddTweets = new ArrayList<>(tweets);
+                toAddTweets.addAll(Arrays.asList(rand.nextTweets(numTweets - tweets.size(), true)));
+            }
+        } else {
+            toAddTweets = new ArrayList<>(Arrays.asList(rand.nextTweets(numTweets, true)));
+        }
+        Twitter t = new Twitter(toAddTweets, toAddStopWords);
+
+        long startTime = System.nanoTime();
+        ArrayList<String> s = t.trendingTopics();
+        long endTime = System.nanoTime();
+        for (int i = 0; i < 35; i++) {
+            System.out.println("[RandomTweets / timedTwitterTrendingPrinted] " + s.get(i));
+        }
+        return endTime - startTime;
     }
 }
