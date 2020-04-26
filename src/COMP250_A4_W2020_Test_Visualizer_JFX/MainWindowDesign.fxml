@@ -11,22 +11,7 @@
    <Pane fx:id="Benchmarking">
       <children>
          <AnchorPane fx:id="innerPane">
-            <BorderPane layoutY="550.0" minWidth="-Infinity" prefWidth="900.0">
-               <center>
-                  <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefWrapLength="50.0"
-                            BorderPane.alignment="CENTER">
-                     <children>
-                        <Label text="Data Points Hor" textAlignment="CENTER">
-                           <font>
-                              <Font name="Gill Sans MT" size="12.0"/>
-                           </font>
-                        </Label>
-                        <Slider fx:id="sizeSlider" max="1500.0" min="5.0" value="500.0"/>
-                        <Hyperlink fx:id="sashaPhotoLink" text=":)"/>
-                     </children>
-                  </FlowPane>
-               </center>
-            </BorderPane>
+            <BorderPane layoutY="550.0" minWidth="-Infinity" prefWidth="900.0"/>
             <Pane fx:id="paneView" layoutY="40.0" mouseTransparent="true"/>
             <MenuButton fx:id="test_cases_menu" layoutX="798.0" layoutY="13.0" mnemonicParsing="false"
                         text="Test Cases">

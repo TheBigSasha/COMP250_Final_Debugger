@@ -33,7 +33,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-//TODO: FUCKING GENIUS PLAN:
+//TODO: GENIUS PLAN:
 //Allow users to plot the methods of their choice all at once
 //ALLOW USERS TO SUBTRACT AND ADD THE RUNTIME OF CERTAIN METHODS FROM EACH OTHER TO SEE
 //THE EFFECTS OF METHOD CALLS ON RUNNING TIME (IE. SUBTRACT RUNTIME OF SORT FROM SMT ELSE)
@@ -342,23 +342,23 @@ public class Controller implements Initializable {
                     value = BM.timedRemove(counter.get());
                     slowValue = BM.timedRemoveReference(counter.get());
                     break;
-                case 10:        //TODO: Twitter.add
+                case 10:
                     value = tBM.timedTwitterAdd(counter.get());
                     slowValue = BM.timedPut(counter.get());
                     break;
-                case 11:        //TODO: Twitter.Date
+                case 11:
                     value = tBM.timedTwitterByDate(counter.get());
                     slowValue = 0L;
                     break;
-                case 12:        //TODO: Twitter.Auth
+                case 12:
                     value = tBM.timedTwitterByAuth(counter.get());
                     slowValue = 0L;
                     break;
-                case 13:        //TODO: Twitter.trend
+                case 13:
                     value = tBM.timedTwitterTrending(counter.get(), counter.get() / 3);
                     slowValue = 0L;
                     break;
-                case 14:        //TODO: Twitter()
+                case 14:
                     value = tBM.timedTwitterConstructor(counter.get(), counter.get());        //TODO: better solution for ratio of tweets to stopwords?
                     //TODO: Separate graph for increasing stopwords?
                     slowValue = 0L;
