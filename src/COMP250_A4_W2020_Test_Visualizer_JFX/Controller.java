@@ -308,47 +308,38 @@ public class Controller implements Initializable {
                     break;
                 case 1:
                     value = BM.timedGetAtSize(counter.get());
-                    System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = BM.timedGetAtSizeRefernce(counter.get());
                     break;
                 case 2:
                     value = BM.timedPut(counter.get());
-                    System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = BM.timedPutReference(counter.get());
                     break;
                 case 3:
                     value = BM.timedIteratorNext(counter.get());
-                    System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = 0L;
                     break;
                 case 4:
                     value = BM.timedIteratorHasNext(counter.get());
-                    System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = 0L;
                     break;
                 case 5:
                     value = BM.timedInterator(counter.get());
-                    System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = 0L;
                     break;
                 case 6:
                     value = BM.timedRehash(counter.get());
-                    System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = 0L;
                     break;
                 case 7:
                     value = BM.timedValues(counter.get());
-                    System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = BM.timedValuesReference(counter.get());
                     break;
                 case 8:
                     value = BM.timedKeys(counter.get());
-                    System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = BM.timedKeysReference(counter.get());
                     break;
                 case 9:
                     value = BM.timedRemove(counter.get());
-                    System.out.println("[Grapher] Value on Y axis is: " + value);
                     slowValue = BM.timedRemoveReference(counter.get());
                     break;
                 case 10:        //TODO: Twitter.add
@@ -356,19 +347,18 @@ public class Controller implements Initializable {
                     slowValue = BM.timedPut(counter.get());
                     break;
                 case 11:        //TODO: Twitter.Date
-                    value = tBM.timedTwitterByDate(1);
+                    value = tBM.timedTwitterByDate(counter.get());
                     slowValue = 0L;
                     break;
                 case 12:        //TODO: Twitter.Auth
-                    value = tBM.timedTwitterByAuth(1);
+                    value = tBM.timedTwitterByAuth(counter.get());
                     slowValue = 0L;
                     break;
                 case 13:        //TODO: Twitter.trend
-                    value = tBM.timedTwitterTrending(1);
+                    value = tBM.timedTwitterTrending(counter.get());
                     slowValue = 0L;
                     break;
                 case 14:        //TODO: Twitter()
-                    System.out.println("[Grapher] Testing speed of Twitter()");
                     value = tBM.timedTwitterConstructor(counter.get(), counter.get());        //TODO: better solution for ratio of tweets to stopwords?
                     //TODO: Separate graph for increasing stopwords?
                     slowValue = 0L;
