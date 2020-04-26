@@ -61,7 +61,7 @@ public class TwitterBenchmark extends HashTableBenchmark {
                     output.append("[BASIC TWITTER TEST] Twitter tweets per day ran in ").append(endTime - startTime).append(" nanoseconds. \n");
                     if (byDateOutput == null) {
                         output.append("[BASIC TWITTER TEST] Output was null");
-                    } else if (byDateOutput.size() != 228) {
+                    } else if (byDateOutput.size() != 75467) {
                         output.append("[BASIC TWITTER TEST] Output size mismatch? Size was " + byDateOutput.size() + "\n[BASIC TWITTER TEST] Tweets from date produced tweets like: ").append(byDateOutput.get((byDateOutput.size() - 1) / 2)).append("\n");
                     } else
                         output.append("[BASIC TWITTER TEST] For fun, here's a tweet it got " + byDateOutput.get((byDateOutput.size() - 1) / 2) + "\n");
@@ -75,7 +75,7 @@ public class TwitterBenchmark extends HashTableBenchmark {
                     Tweet byNameOutput = t.latestTweetByAuthor("Chris");
                     endTime = System.nanoTime();
                     output.append("[BASIC TWITTER TEST] Twitter latest tweet by author ran in ").append(endTime - startTime).append(" nanoseconds. \n\n");
-                    String realLatest = "Chris\tThu Mar 26 00:50:41 +0000 2020\t@batfren @rixor14 he was pretty much the main guy in happy home designer. i love him like a son.  come home digby.";
+                    String realLatest = "@robb444pearce name names. if he's below the ceo he should be fired by tmr. if he is the company should be out of business. ";
                     output.append("[BASIC TWITTER TEST] Twitter latest tweet by author yielded: MESSAGE:" + byNameOutput.getMessage() + "\n");
                     output.append("[BASIC TWITTER TEST] Twitter latest tweet by author yielded: AUTHOR: " + byNameOutput.getAuthor() + "\n");
                     output.append("[BASIC TWITTER TEST] Twitter latest tweet by author yielded: DATE: " + byNameOutput.getDateAndTime() + "\n\n");
@@ -100,7 +100,7 @@ public class TwitterBenchmark extends HashTableBenchmark {
                         if (!s.isEmpty()) {
                             output.append("[BASIC TWITTER TEST]                 ").append(s).append("\n");
                         } else {
-                            output.append("[BASIC TWITTER TEST]                 Empty String in output.\n");
+                            output.append("[BASIC TWITTER TEST]   [ERROR]       Empty String in output.\n");
                         }
                         counter++;
                     }
