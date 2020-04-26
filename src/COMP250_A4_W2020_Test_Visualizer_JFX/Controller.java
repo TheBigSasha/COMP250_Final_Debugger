@@ -33,13 +33,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-//TODO: GENIUS PLAN:
-//Allow users to plot the methods of their choice all at once
-//ALLOW USERS TO SUBTRACT AND ADD THE RUNTIME OF CERTAIN METHODS FROM EACH OTHER TO SEE
-//THE EFFECTS OF METHOD CALLS ON RUNNING TIME (IE. SUBTRACT RUNTIME OF SORT FROM SMT ELSE)
-//Add plots for built in methods for timing reference
-//REVISE DRAWING USING AN ARRAYLIST OF SERIES AND USE CHECK BOXES TO SELECT WHAT GETS GRAPHED
-//FIX WINDOW SIZING WHILE I AM AT IT.
 public class Controller implements Initializable {
     private HashTableBenchmark BM;
     private TwitterBenchmark tBM;
