@@ -59,8 +59,6 @@ public class Controller implements Initializable {
             menu_twitConstBM, menu_twitAddBM, menu_twitDateBM,
             menu_twitAuthBM, menu_twitTrendBM;
     @FXML
-    private Slider sizeSlider;
-    @FXML
     private CheckBox dark_theme_switch;
     @FXML
     private Hyperlink sashaPhotoLink;
@@ -188,7 +186,7 @@ public class Controller implements Initializable {
     }
 
     private void initalizeGraph(int input) {
-        int WINDOW_SIZE = (int) Math.round(sizeSlider.getValue());
+        int WINDOW_SIZE = 2000;
         try {
             scheduledExecutorService.shutdownNow();
         } catch (NullPointerException e) {
