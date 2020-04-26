@@ -10,21 +10,13 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -52,11 +44,9 @@ public class Controller implements Initializable {
             menu_twitConstBM, menu_twitAddBM, menu_twitDateBM,
             menu_twitAuthBM, menu_twitTrendBM;
     @FXML
-    private Slider sizeSlider;
-    @FXML
     private CheckBox dark_theme_switch;
-    @FXML
-    private Hyperlink sashaPhotoLink;
+    /*@FXML
+    private Hyperlink sashaPhotoLink;*/
 
     //UNIT TESTING
     @FXML
@@ -121,7 +111,7 @@ public class Controller implements Initializable {
         dark_theme_switch.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
             playOof();
         });
-        sashaPhotoLink.setOnAction(e -> {
+        /*sashaPhotoLink.setOnAction(e -> {
             if (Desktop.isDesktopSupported()) {
                 try {
                     Desktop.getDesktop().browse(new URI("https://sashaphoto.ca/"));
@@ -131,7 +121,7 @@ public class Controller implements Initializable {
                     e1.printStackTrace();
                 }
             }
-        });
+        });*/
         UT_RunBtn.setOnAction(e -> runAllTests());
         UT_RunAll.setOnAction(e -> runUnitTests());
         UT_RunBasicTwitter.setOnAction(e -> runBasicTwitterTest());
@@ -181,7 +171,7 @@ public class Controller implements Initializable {
     }
 
     private void initalizeGraph(int input) {
-        int WINDOW_SIZE = (int) Math.round(sizeSlider.getValue());
+        int WINDOW_SIZE = 2000;     //TODO: parametrize
         try {
             scheduledExecutorService.shutdownNow();
         } catch (NullPointerException e) {
