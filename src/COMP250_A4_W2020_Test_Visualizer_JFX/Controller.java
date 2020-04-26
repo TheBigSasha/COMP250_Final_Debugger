@@ -14,17 +14,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -52,17 +47,6 @@ public class Controller implements Initializable {
     private AnchorPane anchorPane;
     @FXML
     private Pane paneView;
-    @FXML
-    private MenuItem menu_iterBM, menu_hasNextBM, menu_nextBM,
-            menu_rehashBM, menu_keysBM, menu_valuesBM,
-            menu_removeBM, menu_sortBM, menu_putBM, menu_getBM,
-            menu_twitConstBM, menu_twitAddBM, menu_twitDateBM,
-            menu_twitAuthBM, menu_twitTrendBM;
-    @FXML
-    private CheckBox dark_theme_switch;
-    @FXML
-    private Hyperlink sashaPhotoLink;
-
     //UNIT TESTING
     @FXML
     private Pane UnitTesting;
@@ -73,9 +57,13 @@ public class Controller implements Initializable {
     @FXML
     private TextArea UnitTestTextArea;
 
-    //BOTH
+    //FUN DEMOS
     @FXML
-    private Label BM_Title, UT_Title;
+    private Pane FunDemos;
+
+    //ALL
+    @FXML
+    private Label BM_Title, UT_Title, FUN_Title;
 
 
     @Override
@@ -91,7 +79,9 @@ public class Controller implements Initializable {
     protected void OpenBenchmarking() {
         System.out.println("Switching to Benchmarking View");
         UnitTesting.setVisible(false);
+        FunDemos.setVisible(false);
         UT_Title.setOpacity(0.5);
+        FUN_Title.setOpacity(0.5);
         BM_Title.setOpacity(1);
         Benchmarking.setVisible(true);
         //initalizeGraph(0);
@@ -101,42 +91,27 @@ public class Controller implements Initializable {
     protected void OpenUnitTesting() {
         System.out.println("Switching to Unit Testing View");
         Benchmarking.setVisible(false);
+        FunDemos.setVisible(false);
         //scheduledExecutorService.shutdownNow();
         BM_Title.setOpacity(0.5);
+        FUN_Title.setOpacity(0.5);
         UT_Title.setOpacity(1);
         UnitTesting.setVisible(true);
     }
 
+    @FXML
+    protected void OpenFun() {
+        System.out.println("Switching to fun view");
+        BM_Title.setOpacity(0.5);
+        FUN_Title.setOpacity(1);
+        UT_Title.setOpacity(0.5);
+        UnitTesting.setVisible(false);
+        Benchmarking.setVisible(false);
+        FunDemos.setVisible(true);
+
+    }
+
     private void addListeners() {
-        menu_sortBM.setOnAction(e -> initalizeGraph(0));
-        menu_getBM.setOnAction(e -> initalizeGraph(1));
-        menu_putBM.setOnAction(e -> initalizeGraph(2));
-        menu_nextBM.setOnAction(e -> initalizeGraph(3));
-        menu_hasNextBM.setOnAction(e -> initalizeGraph(4));
-        menu_iterBM.setOnAction(e -> initalizeGraph(5));
-        menu_rehashBM.setOnAction(e -> initalizeGraph(6));
-        menu_valuesBM.setOnAction(e -> initalizeGraph(7));
-        menu_keysBM.setOnAction(e -> initalizeGraph(8));
-        menu_removeBM.setOnAction(e -> initalizeGraph(9));
-        menu_twitAddBM.setOnAction(e -> initalizeGraph(10));
-        menu_twitDateBM.setOnAction(e -> initalizeGraph(11));
-        menu_twitAuthBM.setOnAction(e -> initalizeGraph(12));
-        menu_twitTrendBM.setOnAction(e -> initalizeGraph(13));
-        menu_twitConstBM.setOnAction(e -> initalizeGraph(14));
-        dark_theme_switch.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-            playOof();
-        });
-        sashaPhotoLink.setOnAction(e -> {
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    Desktop.getDesktop().browse(new URI("https://sashaphoto.ca/"));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                } catch (URISyntaxException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
         UT_RunBtn.setOnAction(e -> runAllTests());
         UT_RunAll.setOnAction(e -> runUnitTests());
         UT_RunBasicTwitter.setOnAction(e -> runBasicTwitterTest());

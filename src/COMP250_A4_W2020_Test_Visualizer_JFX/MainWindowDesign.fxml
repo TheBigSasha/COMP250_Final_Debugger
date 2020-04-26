@@ -2,10 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="anchorPane" maxHeight="900.0" maxWidth="900.0" prefHeight="600.0"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="anchorPane" maxHeight="700.0" maxWidth="900.0" prefHeight="700.0"
             prefWidth="900.0" stylesheets=" /COMP250_A4_W2020_Test_Visualizer_JFX/mondea_dark.css"
             xmlns="http://javafx.com/javafx/10.0.2-internal"
             fx:controller="COMP250_A4_W2020_Test_Visualizer_JFX.Controller">
@@ -119,51 +118,6 @@
                </center>
             </BorderPane>
             <Pane fx:id="paneView" layoutY="40.0" mouseTransparent="true"/>
-            <MenuButton fx:id="test_cases_menu" layoutX="798.0" layoutY="13.0" mnemonicParsing="false"
-                        text="Test Cases">
-               <items>
-                  <Menu mnemonicParsing="false" text="Hash Table">
-                     <items>
-                        <MenuItem id="menu_getBM" fx:id="menu_getBM" mnemonicParsing="false" text="Get"/>
-                        <MenuItem id="menu_putBM" fx:id="menu_putBM" mnemonicParsing="false" text="Put"/>
-                        <MenuItem id="menu_sortBM" fx:id="menu_sortBM" mnemonicParsing="false" text="Sort"/>
-                        <MenuItem id="menu_removeBM" fx:id="menu_removeBM" mnemonicParsing="false" text="Remove"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem id="menu_valuesBM" fx:id="menu_valuesBM" mnemonicParsing="false" text="Values"/>
-                        <MenuItem id="menu_keysBM" fx:id="menu_keysBM" mnemonicParsing="false" text="Keys"/>
-                        <MenuItem id="menu_rehashBM" fx:id="menu_rehashBM" mnemonicParsing="false" text="Rehash"/>
-                     </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Iterator">
-                     <items>
-                        <MenuItem id="menu_nextBM" fx:id="menu_nextBM" mnemonicParsing="false" text="Next"/>
-                        <MenuItem id="menu_iterBM" fx:id="menu_iterBM" mnemonicParsing="false" text="Iter"/>
-                        <MenuItem id="menu_hasNextBM" fx:id="menu_hasNextBM" mnemonicParsing="false" text="HasNext"/>
-                     </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Twitter">
-                     <items>
-                        <MenuItem id="menu_twitConstBM" fx:id="menu_twitConstBM" mnemonicParsing="false"
-                                  text="Constructor"/>
-                        <MenuItem id="menu_twitAddBM" fx:id="menu_twitAddBM" mnemonicParsing="false" text="Add Tweet"/>
-                        <MenuItem id="menu_twitDateBM" fx:id="menu_twitDateBM" mnemonicParsing="false" text="By Date"/>
-                        <MenuItem id="menu_twitAuthBM" fx:id="menu_twitAuthBM" mnemonicParsing="false"
-                                  text="By Author"/>
-                        <MenuItem id="menu_twitTrendBM" fx:id="menu_twitTrendBM" mnemonicParsing="false"
-                                  text="Trending"/>
-                     </items>
-                  </Menu>
-               </items>
-            </MenuButton>
-            <CheckBox fx:id="dark_theme_switch" layoutX="703.0" layoutY="17.0" mnemonicParsing="false"
-                      mouseTransparent="true" selected="true" text="Dark Theme">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND"/>
-               </cursor>
-               <font>
-                  <Font name="Arial Narrow Bold" size="13.0"/>
-               </font>
-            </CheckBox>
          </AnchorPane>
       </children>
    </Pane>
@@ -193,6 +147,13 @@
                <Font name="Arial Narrow" size="33.0"/>
             </font>
          </Label>
+         <Label fx:id="FUN_Title" onMouseClicked="#OpenFun" text="Fun Demos"/>
       </buttons>
    </ButtonBar>
+   <Pane fx:id="FunDemos" prefHeight="637.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0"
+         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+         <Hyperlink text="Hyperlink"/>
+      </children>
+   </Pane>
 </AnchorPane>

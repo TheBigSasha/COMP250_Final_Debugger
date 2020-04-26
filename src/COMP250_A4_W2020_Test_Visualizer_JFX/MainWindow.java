@@ -1,7 +1,6 @@
 package COMP250_A4_W2020_Test_Visualizer_JFX;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,8 +23,8 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("MainWindowDesign.fxml"));
         primaryStage.setTitle("Runtime Efficiency Wizard - <3 sashaphoto.ca Tweet Visualizer");
-        primaryStage.setScene(new Scene(root, 900, 625));
-        primaryStage.setResizable(false);
+        primaryStage.setScene(new Scene(root, 900, 750));
+        primaryStage.setResizable(true);
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
