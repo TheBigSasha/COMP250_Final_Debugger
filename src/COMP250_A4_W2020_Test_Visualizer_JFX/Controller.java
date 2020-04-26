@@ -84,6 +84,7 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         addListeners();
         BM = new HashTableBenchmark();
+        tBM = new TwitterBenchmark();
         //playOof();
         initalizeGraph(0);
     }

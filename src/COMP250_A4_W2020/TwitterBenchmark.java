@@ -23,7 +23,11 @@ public class TwitterBenchmark extends HashTableBenchmark {
 
     public static void main(String[] args) {
         TwitterBenchmark tBM = new TwitterBenchmark();
-        System.out.println(tBM.timedTwitterAdd(1));
+        System.out.println("Sample constructor BM: " + tBM.timedTwitterConstructor(15, 15));
+        System.out.println("Sample add BM: " + tBM.timedTwitterAdd(15));
+        System.out.println("Sample byAuth BM: " + tBM.timedTwitterByAuth(15));
+        System.out.println("Sample byDate BM: " + tBM.timedTwitterByDate(15));
+        System.out.println("Sample trendingTopics BM: " + tBM.timedTwitterTrending(15));
         System.out.println(tBM.basicTwitterTest());
     }
 
