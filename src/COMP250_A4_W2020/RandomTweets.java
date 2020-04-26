@@ -124,7 +124,7 @@ public class RandomTweets extends Random {
             System.out.println("[RandomTweets / InitializeDatabases] Failed to get common words from internet. Check your connection.");
         }
 
-        System.out.println("[RandomTweets / InitializeDatabases] " + passed + "/3 databases initialized!");
+        System.out.println("[RandomTweets / InitializeDatabases] " + passed + "/4 databases initialized!");
     }
 
     private void initializeNames() throws IOException {
