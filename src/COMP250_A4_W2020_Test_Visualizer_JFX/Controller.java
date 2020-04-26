@@ -33,7 +33,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-//TODO: FUCKING GENIUS PLAN:
+//TODO: GENIUS PLAN:
 //Allow users to plot the methods of their choice all at once
 //ALLOW USERS TO SUBTRACT AND ADD THE RUNTIME OF CERTAIN METHODS FROM EACH OTHER TO SEE
 //THE EFFECTS OF METHOD CALLS ON RUNNING TIME (IE. SUBTRACT RUNTIME OF SORT FROM SMT ELSE)
