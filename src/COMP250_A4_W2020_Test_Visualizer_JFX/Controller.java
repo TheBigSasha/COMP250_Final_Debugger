@@ -35,8 +35,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Controller implements Initializable {
-    private static final String musicFile = "src/COMP250_A4_W2020_Test_Visualizer_JFX/minecraft_damage.mp3";
-    ArrayList<CheckBox> toggles;
     private HashTableBenchmark BM;
     private TwitterBenchmark tBM;
     private ScheduledExecutorService scheduledExecutorService;
@@ -54,6 +52,10 @@ public class Controller implements Initializable {
     @FXML
     private CheckBox GC_Twit_Trending, GC_Twit_Constructor, GC_Twit_ByDate, GC_Twit_ByAuth, GC_Twit_Add,
             GC_Twit_ConstructorII, GC_Twit_TrendingII, GC_TurboMode;
+    //FUN DEMOS
+    private static final ArrayList<String> trendOptions = new ArrayList<String>(Arrays.asList("Bee Movie script (small)", "real tweets (medium)",
+            "a bunch of songs (colossal)", "a bunch of songs (large)",
+            "a custom webpage"));
     @FXML
     private Slider GC_StopWordFactor, GC_StopWordFactorII, GC_TurboFactor;
     @FXML
@@ -68,11 +70,7 @@ public class Controller implements Initializable {
     private Button UT_RunBtn;
     @FXML
     private TextArea UnitTestTextArea;
-
-    //FUN DEMOS
-    private final ArrayList<String> trendOptions = new ArrayList<String>(Arrays.asList("Bee Movie script (small)", "real tweets (medium)",
-            "a bunch of songs (colossal)", "a bunch of songs (large)",
-            "a custom webpage"));
+    private ArrayList<CheckBox> toggles;
     @FXML
     private TextArea Fun_LastOpRuntime;
     @FXML
@@ -308,6 +306,7 @@ public class Controller implements Initializable {
     }
 
     private void playOof() {
+        final String musicFile = "src/COMP250_A4_W2020_Test_Visualizer_JFX/minecraft_damage.mp3";
         Media sound = new Media(new File(musicFile).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
@@ -356,15 +355,8 @@ public class Controller implements Initializable {
     private void runAllTests() {
         UnitTestTextArea.setEditable(false);
         UnitTestTextArea.setWrapText(true);
-        //UnitTestTextArea.setFont(javafx.scene.text.Font.font(Font.SERIF));
         UnitTestTextArea.setText("Running tests. This will take a while.");
         runUnitTests();
-        /*try {
-            HashTableStressTester.main(new String[0]);
-            UnitTestTextArea.appendText("\n \n \nRan prof supplied tests. Check console for results.");
-        } catch (Exception e) {
-            UnitTestTextArea.appendText("\n\n\nAttempted to run prof supplied test, but it threw exception " + e.getMessage());
-        }*/
         runBasicTwitterTest();
         UnitTestTextArea.appendText("\n \n \nMore tests coming soon <3");
     }
@@ -379,7 +371,6 @@ public class Controller implements Initializable {
         NumberAxis yAxis = new NumberAxis();
         CategoryAxis xAxis = new CategoryAxis();
 
-        //primaryStage.setTitle("Runtime Efficiency Visualizer");
 
         // defining the axes
         xAxis.setLabel("Size of HashTable");
@@ -403,18 +394,7 @@ public class Controller implements Initializable {
             }
         }
 
-
-        // add series to chart
         lineChart.getData().addAll(plotsRunTime.keySet());
-
-        // setup scene
-        //Group g = new Group(lineChart1);
-        //Scene scene = new Scene(g, 800, 600);
-        //primaryStage.setScene(scene);
-
-        // show the stage
-        //primaryStage.show();
-        //lineChart.setMinSize(499,499);
         lineChart.setPrefSize(900, 500);
         paneView.getChildren().add(lineChart);
 
@@ -423,16 +403,10 @@ public class Controller implements Initializable {
         AtomicInteger counter = new AtomicInteger();
         scheduledExecutorService.scheduleAtFixedRate(() -> {
             counter.getAndIncrement();
-            Long value;
-            Long slowValue;
             for (Map.Entry<XYChart.Series<String, Number>, Long> entry : plotsRunTime.entrySet()) {
                 entry.setValue(ComputeRuntime(entry.getKey().getName(), counter.get()));
             }
 
-
-            //System.out.println("[Grapher] Data updated.");
-
-            // Update the chart
             Platform.runLater(() -> {
                 for (Map.Entry<XYChart.Series<String, Number>, Long> entry : plotsRunTime.entrySet()) {
                     entry.getKey().getData().add(new XYChart.Data<String, Number>(Integer.toString(counter.get()), entry.getValue()));
