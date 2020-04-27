@@ -262,7 +262,8 @@
       <children>
          <Button fx:id="fun_Sashaphotolink" layoutX="782.0" layoutY="14.0" mnemonicParsing="false"
                  text="sashaphoto.ca"/>
-         <TextArea fx:id="Fun_Output" layoutX="25.0" layoutY="57.0" prefHeight="550.0" prefWidth="849.0"/>
+         <TextArea fx:id="Fun_Output" editable="false" layoutX="25.0" layoutY="57.0" prefHeight="550.0"
+                   prefWidth="849.0"/>
          <TextFlow layoutX="25.0" layoutY="629.0">
             <children>
                <Label text="Trending words in:"/>

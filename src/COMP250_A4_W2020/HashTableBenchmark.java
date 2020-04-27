@@ -391,6 +391,7 @@ public class HashTableBenchmark {
 
     public long timedSortReference(int count) {
         ArrayList<String> testSubject = new ArrayList<>(rand.nextStopWords(count));
+        //System.out.println("Size of java arraylist is " + testSubject.size());
         long startTime = System.nanoTime();
         testSubject.sort(String::compareToIgnoreCase);
         long endTime = System.nanoTime();
