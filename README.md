@@ -62,7 +62,7 @@ You may still run unit tests by running HashTableUnitTester.java
 
 ## Screenshots
 
-![iterator speed test](https://sashaphotoca.files.wordpress.com/2020/04/2020-04-19-00_41_18-runtime-efficiency-wizard-_3-sashaphoto.ca-tweet-visualizer.png)
+![iterator speed test](https://sashaphotoca.files.wordpress.com/2020/04/2020-04-26-19_19_16-runtime-efficiency-wizard-_3-sashaphoto.ca-tweet-visualizer.png)
 
-![sort unit test](https://sashaphotoca.files.wordpress.com/2020/04/2020-04-19-00_43_51-runtime-efficiency-wizard-_3-sashaphoto.ca-tweet-visualizer.png)
+![sort unit test](https://sashaphotoca.files.wordpress.com/2020/04/2020-04-26-20_33_30-runtime-efficiency-wizard-_3-sashaphoto.ca-tweet-visualizer.png)
 
