@@ -52,6 +52,9 @@ Attempt to run <code>MainWindow.java</code> again. It should work.
 For more detail, read the [official instructions](https://www.jetbrains.com/help/idea/javafx.html)
 
 ##### Eclipse:
+##### Help wanted!
+If you want to collaborate on an easy intsall procedure for Eclipse, please fork this repository or contact me!
+
 ###### Step 1: [Intstall IntelliJ IDEA](https://www.jetbrains.com/community/education/#students), it is free for students.
 I presently do not offer Eclipse support for the runtime analysis part of this application. This will change as more brave users test JavaFX setup in eclipse.
 
