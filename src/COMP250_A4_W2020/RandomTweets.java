@@ -1,12 +1,13 @@
 package COMP250_A4_W2020;
 
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.parser.ParserDelegator;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -756,5 +757,90 @@ public class RandomTweets extends Random {
             counter++;
         }
         return output.toString();
+    }
+
+    public String nextTrend(String URI, int stopWordFator) throws IOException {
+        URL url = new URL(URI);
+        URLConnection con = url.openConnection();
+        InputStream is = con.getInputStream();
+        ArrayList<String> linesFromSite = new ArrayList<>(parseHTML(new BufferedReader(new InputStreamReader(is))));
+
+
+        /*BufferedReader br = new BufferedReader(new InputStreamReader(is));*/
+        final Pattern REMOVE_TAGS = Pattern.compile("<.+?>");
+
+        String line = null;
+        /*while ((line = br.readLine()) != null) {*/
+        /*for(String s : linesFromSite){
+            {
+                *//*Matcher m = REMOVE_TAGS.matcher(line);
+                line = m.replaceAll("");
+                line = line.replaceAll("\\<[^>]*>","");
+                line = line.replaceAll("(<.*?>)|(&.*?;)|([ ]{2,})", "");*//*
+
+                try {
+                    if (!line.isBlank()) {
+                        linesFromSite.add(line);
+                    }
+                }catch(NullPointerException e){}
+                //System.out.println(line);
+            }
+        }*/
+        Twitter t = new Twitter(tweetsOf(linesFromSite), nextStopWords(linesFromSite.size() / (stopWordFator + 1)));
+        StringBuilder output = new StringBuilder();
+        ArrayList<String> trending = t.trendingTopics();
+        int counter = 0;
+        for (String s : trending) {
+            if (counter > 100) break;
+            output.append(s).append("\n");
+            counter++;
+        }
+        return output.toString();
+    }
+
+    private List<String> parseHTML(Reader reader) throws IOException {
+        List<String> lines = HTMLUtils.extractText(reader);
+        return lines;
+    }
+
+    private static class HTMLUtils {
+        private HTMLUtils() {
+        }
+
+        public static List<String> extractText(Reader reader) throws IOException {
+            final ArrayList<String> list = new ArrayList<String>();
+
+            ParserDelegator parserDelegator = new ParserDelegator();
+            HTMLEditorKit.ParserCallback parserCallback = new HTMLEditorKit.ParserCallback() {
+                public void handleText(final char[] data, final int pos) {
+                    list.add(new String(data));
+                }
+
+                public void handleStartTag(HTML.Tag tag, MutableAttributeSet attribute, int pos) {
+                }
+
+                public void handleEndTag(HTML.Tag t, final int pos) {
+                }
+
+                public void handleSimpleTag(HTML.Tag t, MutableAttributeSet a, final int pos) {
+                }
+
+                public void handleComment(final char[] data, final int pos) {
+                }
+
+                public void handleError(final java.lang.String errMsg, final int pos) {
+                }
+            };
+            parserDelegator.parse(reader, parserCallback, true);
+            return list;
+        }
+
+        public final void main(String[] args) throws Exception {
+            FileReader reader = new FileReader("java-new.html");
+            List<String> lines = HTMLUtils.extractText(reader);
+            for (String line : lines) {
+                System.out.println(line);
+            }
+        }
     }
 }

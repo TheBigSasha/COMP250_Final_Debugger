@@ -269,7 +269,22 @@ public class Controller implements Initializable {
             Fun_Output.setText(tBM.getRand().nextTrend(3, (int) Fun_StopWordFactor.getValue()));
         } else if (choice.equals(trendOptions.get(4))) { //Custom URL
             //TODO:
-            Fun_Output.setText("Not so fast, buckaroo. This is still in development.");
+            Fun_Output.setText("URL Trend Finder: No input provided.");
+            final ArrayList<String> URLchoices = new ArrayList<>(Arrays.asList("https://www.mcgill.ca/study/2019-2020/courses/comp-250", "https://stackoverflow.com/questions/240546/remove-html-tags-from-a-string",
+                    "https://twitter.com/explore", "https://en.wikipedia.org/wiki/Python_(programming_language)", "https://en.wikipedia.org/wiki/Special:Random",
+                    "https://www.geeksforgeeks.org/java-util-hashmap-in-java-with-examples/"));
+            TextInputDialog dialog = new TextInputDialog(URLchoices.get(BM.getRand().nextInt(URLchoices.size() - 1)));
+            dialog.setTitle("URL Prompt");
+            dialog.setHeaderText("Run trend analysis on a custom URL");
+            dialog.setContentText("Enter a valid URL:");
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(s -> {
+                try {
+                    Fun_Output.setText(tBM.getRand().nextTrend(s, (int) Fun_StopWordFactor.getValue()));
+                } catch (IOException e) {
+                    Fun_Output.setText(e.getMessage());
+                }
+            });
         }
         long endTime = System.nanoTime();
         Fun_Progress.setProgress(1);
