@@ -107,7 +107,7 @@ public class Controller implements Initializable {
         BM = new HashTableBenchmark();
         tBM = new TwitterBenchmark(BM.getRand());
         //playOof();
-        initalizeGraph(0);
+        initalizeGraph();
     }
 
     @FXML
@@ -151,7 +151,7 @@ public class Controller implements Initializable {
         UT_RunAll.setOnAction(e -> runUnitTests());
         UT_RunBasicTwitter.setOnAction(e -> runBasicTwitterTest());
         GC_Reset.setOnAction(e -> resetButtons());
-        GC_Refresh.setOnAction(e -> initalizeGraph(0));
+        GC_Refresh.setOnAction(e -> initalizeGraph());
         GC_Help.setOnAction(e -> openHelpPage());
         Fun_GoWords.setOnAction(e -> fun_words(false));
         Fun_GoSong.setOnAction(e -> fun_sing(false));
@@ -161,7 +161,7 @@ public class Controller implements Initializable {
         FunTrendingSelector.getItems().addAll(trendOptions);
         FunTrendingSelector.setValue(trendOptions.get(0));
         for (CheckBox box : toggles) {
-            box.setOnMouseClicked(e -> initalizeGraph(0));
+            box.setOnMouseClicked(e -> initalizeGraph());
         }
         Fun_CommonWordsNum.setValueFactory(new SpinnerValueFactory<Integer>() {
             @Override
@@ -314,7 +314,7 @@ public class Controller implements Initializable {
         for (CheckBox box : toggles) {
             box.setSelected(false);
         }
-        initalizeGraph(0);
+        initalizeGraph();
     }
 
     private void runUnitTests() {
@@ -354,8 +354,7 @@ public class Controller implements Initializable {
         UnitTestTextArea.appendText("\n \n \nMore tests coming soon <3");
     }
 
-    private void initalizeGraph(int input) {
-        int WINDOW_SIZE = 2000;
+    private void initalizeGraph() {
         try {
             scheduledExecutorService.shutdownNow();
         } catch (NullPointerException e) {
@@ -376,7 +375,7 @@ public class Controller implements Initializable {
         // creating the line chart with two axis created above
         LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setTitle("Runtime Efficiency");
-        lineChart.setAnimated(true); // disable animations
+        lineChart.setAnimated(true); // animations
         ArrayList<XYChart.Series<String, Number>> plots = new ArrayList<XYChart.Series<String, Number>>();
         HashMap<XYChart.Series<String, Number>, Long> plotsRunTime = new HashMap<XYChart.Series<String, Number>, Long>();
 
