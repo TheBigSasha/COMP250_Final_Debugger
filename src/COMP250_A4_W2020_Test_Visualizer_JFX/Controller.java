@@ -110,7 +110,7 @@ public class Controller implements Initializable {
 
     @FXML
     protected void OpenBenchmarking() {
-        System.out.println("Switching to Benchmarking View");
+        //System.out.println("Switching to Benchmarking View");
         UnitTesting.setVisible(false);
         FunDemos.setVisible(false);
         UT_Title.setOpacity(0.5);
@@ -122,7 +122,7 @@ public class Controller implements Initializable {
 
     @FXML
     protected void OpenUnitTesting() {
-        System.out.println("Switching to Unit Testing View");
+        //System.out.println("Switching to Unit Testing View");
         Benchmarking.setVisible(false);
         FunDemos.setVisible(false);
         //scheduledExecutorService.shutdownNow();
@@ -134,7 +134,7 @@ public class Controller implements Initializable {
 
     @FXML
     protected void OpenFun() {
-        System.out.println("Switching to fun view");
+        //System.out.println("Switching to fun view");
         BM_Title.setOpacity(0.5);
         FUN_Title.setOpacity(1);
         UT_Title.setOpacity(0.5);
@@ -365,7 +365,7 @@ public class Controller implements Initializable {
         try {
             scheduledExecutorService.shutdownNow();
         } catch (NullPointerException e) {
-            System.out.println("Starting plot");
+            //System.out.println("Starting plot");
         }
         paneView.getChildren().clear();
         NumberAxis yAxis = new NumberAxis();
