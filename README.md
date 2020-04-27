@@ -28,6 +28,8 @@ File -> Import -> Git -> Projects from Git (With Smart Import) -> Clone URI -> p
 Do the below using Finder or File Explorer, not your IDE:
 Add your assignment .java files and any of your own classes to the COMP250_A4_W2020 package, in the location of Put Your java files here.txt.
 
+##### NOTE: You must add the files from the professor's stress tester (.java files into the same place as your code) (.csv and .txt support files into the root directory)
+
 ##### NOTE: You must add your .java files into this project.It will not work if you drag my files into your project unless you really know what you are doing.
 
 #### Configure your IDE for JavaFX:
@@ -65,4 +67,10 @@ You may still run unit tests by running HashTableUnitTester.java
 ![iterator speed test](https://sashaphotoca.files.wordpress.com/2020/04/2020-04-26-19_19_16-runtime-efficiency-wizard-_3-sashaphoto.ca-tweet-visualizer.png)
 
 ![sort unit test](https://sashaphotoca.files.wordpress.com/2020/04/2020-04-26-20_33_30-runtime-efficiency-wizard-_3-sashaphoto.ca-tweet-visualizer.png)
+
+## Recommended Folder Structure
+![Folder structure](https://sashaphotoca.files.wordpress.com/2020/04/2020-04-26-21_12_19-comp250_final_debugger-e28093-controller.java-intellij-idea.png)
+
+## Contributing, Help, and Contact
+Feel free to fork and pull request this repository. If you have any questions, concerns, or feedback do not hesitate to contact me at sasha@sashaphoto.ca
 
