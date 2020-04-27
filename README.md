@@ -52,6 +52,7 @@ Attempt to run <code>MainWindow.java</code> again. It should work.
 For more detail, read the [official instructions](https://www.jetbrains.com/help/idea/javafx.html)
 
 ##### Eclipse:
+##### IMPORTANT: WHEN YOU CLONE, USE THE ECLIPSE BRANCH
 ##### Help wanted!
 If you want to collaborate on an easy intsall procedure for Eclipse, please fork this repository or contact me!
 
